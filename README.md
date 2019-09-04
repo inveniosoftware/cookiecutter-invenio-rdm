@@ -1,0 +1,1 @@
+# cookiecutter-invenio-rdm
