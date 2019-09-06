@@ -6,6 +6,7 @@
 # --- INIT ---
 $ cookiecutter gh:inveniosoftware/cookiecutter-invenio-rdm --checkout dev
 $ cd my-site # This will go to python working_dir
+$ pipenv lock # It can be handled by the user
 
 # --- BUILD ---
 $ docker build -f Dockerfile.base -t my-site-base:latest .
