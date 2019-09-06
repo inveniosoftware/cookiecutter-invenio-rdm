@@ -1,0 +1,12 @@
+{
+    "project_name": "My Site",
+    "project_shortname": "{{ cookiecutter.project_name | lower | replace(' ', '-') }}",
+    "project_site": "{{ cookiecutter.project_shortname }}.com",
+    "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
+    "description": "Invenio RDM {{ cookiecutter.project_name }} Instance",
+    "author_name": "CERN",
+    "author_email": "info@{{ cookiecutter.project_site }}",
+    "year": "{% now 'local', '%Y' %}",
+    "database": ["postgresql", "mysql", "sqlite"],
+    "elasticsearch": ["6", "5"]
+}

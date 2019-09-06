@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+{% raw %}
+script_path=$(dirname "$0")
+pipfile_lock_path="$script_path/../Pipfile.lock"
+
+if [ ! -f $pipfile_lock_path ]; then
+    echo "'Pipfile.lock' not found. Generating via 'pipenv lock --dev'..."
+    pipenv lock --dev
+fi
+
+# Installs all packages specified in Pipfile.lock
+pipenv sync --dev
+# Install application code and entrypoints from 'setup.py'
+pipenv run pip install -e $script_path/..
+# Build assets
+pipenv run invenio collect -v
+pipenv run invenio webpack buildall
+
+{% endraw %}

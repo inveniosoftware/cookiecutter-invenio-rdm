@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+invenio-app-rdm = {editable = true,extras = ["{{ cookiecutter.database }}", {%- if cookiecutter.elasticsearch == "5" %} "elasticsearch5", {%- elif cookiecutter.elasticsearch == "6" %} "elasticsearch6" {%- endif %}],git = "https://github.com/inveniosoftware/invenio-app-rdm.git",ref = "272e537bb6d8f6a89d3e6fa19565fa05de0c8bcb"}
+invenio-records-permissions = {editable = true, git = "https://github.com/inveniosoftware/invenio-records-permissions.git",ref = "d61cbdb0ab51496fde55d68b8472dbbe1ee4573b"}
+invenio-rdm-records = {editable = true, git = "https://github.com/inveniosoftware/invenio-rdm-records.git",ref = "d8a6e9517ef70191ec53a341241514b90cac4d8f"}
+uwsgi = ">=2.0"
+uwsgitop = ">=0.11"
+uwsgi-tools = ">=1.1.1"
+lxml = "<4.2.6,>=3.5.0"
+
+[requires]
+python_version = "3.6"
