@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+script_path=$(dirname "$0")
+
+export FLASK_ENV=development
+export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
+
+# Start Worker and Server
+pipenv run celery worker -A invenio_app.celery -l INFO & pid_celery=$!
+
+pipenv run invenio run \
+       --cert "$script_path"/../docker/nginx/test.crt \
+       --key "$script_path"/../docker/nginx/test.key & pid_server=$!
+
+trap 'kill $pid_celery $pid_server &>/dev/null' EXIT
+
+wait $pid_celery $pid_server

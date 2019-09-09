@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+if [ "$1" == "--dev" ]; then
+    export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
+fi
+
 # Clean redis
 pipenv run invenio shell --no-term-title -c "import redis; redis.StrictRedis.from_url(app.config['CACHE_REDIS_URL']).flushall(); print('Cache cleared')"
 pipenv run invenio db destroy --yes-i-know

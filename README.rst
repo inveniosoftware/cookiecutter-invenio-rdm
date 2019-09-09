@@ -18,11 +18,24 @@ $ docker build -t my-site:latest .
 $ docker-compose up
 
 # --- SETUP --- # JUST ONCE
+
+# PROD
 $ docker exec ${CONTAINER_ID} /bin/bash -c "/bin/bash /opt/invenio/src/scripts/bootstrap"
 $ docker exec ${CONTAINER_ID} /bin/bash -c "/bin/bash /opt/invenio/src/scripts/setup"
 
+# DEV
+$ scripts/bootstrap
+$ scripts/setup --dev
+$ scripts/server
+
 # --- USE IT! ---
-$ curl -k   -H "Content-Type: application/json" https://localhost/api/records/
+
+# PROD
+$ curl -k -H "Content-Type: application/json" https://localhost/api/records/
+
+# DEV
+$ curl -k -H "Content-Type: application/json" https://localhost:5000/api/records/
+
 
 # --- UPGRADE ---
 # Run a pipenv upgrade inside the docker container and echo the output outside the container

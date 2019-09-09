@@ -1,0 +1,36 @@
+#
+# Backend services for needed for development.
+#
+# Usage::
+#
+#   $ docker-compose up -d
+#   $ ./docker/wait-for-services.sh
+#
+# Following services are included:
+# - Cache: Redis (exposed port: 6379)
+# - DB: (PostgresSQL/MySQL) (exposed port: 5432 or 3306)
+# - Message queue: RabbitMQ (exposed ports: 5672, 15672)
+# - Elasticsearch (exposed ports: 9200, 9300)
+#
+version: '2.3'
+services:
+  cache:
+    extends:
+      file: docker-services.yml
+      service: cache
+{%- if cookiecutter.database != 'sqlite'%}
+  db:
+    extends:
+      file: docker-services.yml
+      service: db
+{%- endif %}
+  mq:
+    extends:
+      file: docker-services.yml
+      service: mq
+  es:
+    extends:
+      file: docker-services.yml
+      service: es
+  # Worker
+  # TODO

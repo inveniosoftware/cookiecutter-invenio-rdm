@@ -7,6 +7,7 @@
 #   $ ./docker/wait-for-services.sh
 #
 # Following services are included:
+# - Frontend: Nginx (exposed ports: 40 and 443)
 # - UI application: UWSGI (not exposed)
 # - API application: UWSGI (not exposed)
 # - Cache: Redis (exposed port: 6379)
