@@ -7,11 +7,11 @@ pipfile_lock_path="$script_path/../Pipfile.lock"
 
 if [ ! -f $pipfile_lock_path ]; then
     echo "'Pipfile.lock' not found. Generating via 'pipenv lock --dev'..."
-    pipenv lock --dev
+    pipenv lock --dev --pre
 fi
 
 # Installs all packages specified in Pipfile.lock
-pipenv sync --dev
+pipenv sync --dev --pre
 # Install application code and entrypoints from 'setup.py'
 pipenv run pip install -e $script_path/..
 # Build assets
