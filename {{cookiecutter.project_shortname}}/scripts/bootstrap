@@ -16,4 +16,6 @@ pipenv sync --dev --pre
 pipenv run invenio collect -v
 pipenv run invenio webpack buildall
 
+cp -f $script_path/../static/images/logo.svg $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/static/images/logo.svg
+
 {% endraw %}

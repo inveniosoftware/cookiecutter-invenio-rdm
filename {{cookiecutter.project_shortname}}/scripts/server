@@ -5,6 +5,7 @@ script_path=$(dirname "$0")
 
 export FLASK_ENV=development
 export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
+export INVENIO_THEME_LOGO='images/logo.svg'
 
 # Start Worker and Server
 pipenv run celery worker -A invenio_app.celery -l INFO & pid_celery=$!
