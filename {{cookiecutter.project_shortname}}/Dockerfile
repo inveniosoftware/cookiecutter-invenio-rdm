@@ -14,8 +14,7 @@ FROM {{cookiecutter.project_shortname}}-base:${DEPENDENCIES_VERSION}
 COPY ./ .
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 
-RUN pip install . && \
-    invenio collect -v  && \
+RUN invenio collect -v  && \
     invenio webpack create && \
     # --unsafe needed because we are running as root
     invenio webpack install --unsafe && \

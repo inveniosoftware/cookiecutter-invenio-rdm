@@ -12,8 +12,6 @@ fi
 
 # Installs all packages specified in Pipfile.lock
 pipenv sync --dev --pre
-# Install application code and entrypoints from 'setup.py'
-pipenv run pip install -e $script_path/..
 # Build assets
 pipenv run invenio collect -v
 pipenv run invenio webpack buildall
