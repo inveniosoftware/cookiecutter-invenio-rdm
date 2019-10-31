@@ -1,56 +1,60 @@
-# Cookiecutter Invenio RDM
+..
+    This file is part of Invenio.
+    Copyright (C) 2019 CERN.
 
-## Steps
+    Invenio is free software; you can redistribute it and/or modify it
+    under the terms of the MIT License; see LICENSE file for more details.
 
-``` console
-# --- INIT ---
-$ cookiecutter gh:inveniosoftware/cookiecutter-invenio-rdm --checkout dev
-$ cd my-site # This will go to python working_dir
-$ pipenv lock # It can be handled by the user
+==============================
+ Cookiecutter-Invenio-RDM
+==============================
 
-# --- BUILD ---
-$ docker build -f Dockerfile.base -t my-site-base:latest .
-$ docker build -t my-site:latest .
+.. image:: https://img.shields.io/github/license/inveniosoftware/cookiecutter-invenio-rdm.svg
+        :target: https://github.com/inveniosoftware/cookiecutter-invenio-rdm/blob/master/LICENSE
 
-# --- SERVER ---
-# Might need to increase virtual memory to avoid OOM (code 78)
-# sudo sysctl -w vm.max_map_count=524288
-$ docker-compose up
+.. image:: https://img.shields.io/travis/inveniosoftware/cookiecutter-invenio-rdm.svg
+        :target: https://travis-ci.org/inveniosoftware/cookiecutter-invenio-rdm
 
-# --- SETUP --- # JUST ONCE
+This `Cookiecutter <https://github.com/audreyr/cookiecutter>`_ template is
+designed to help you to bootstrap an `Invenio
+<https://github.com/inveniosoftware/invenio>`_ service.
 
-# PROD
-$ docker exec ${CONTAINER_ID} /bin/bash -c "/bin/bash /opt/invenio/src/scripts/bootstrap"
-$ docker exec ${CONTAINER_ID} /bin/bash -c "/bin/bash /opt/invenio/src/scripts/setup"
+Quickstart
+----------
 
-# DEV
-$ scripts/bootstrap
-$ scripts/setup --dev
-$ scripts/server
+Install the latest Cookiecutter if you haven't installed it yet::
 
-# --- USE IT! ---
+    pip install -U cookiecutter
 
-# PROD
-$ curl -k -H "Content-Type: application/json" https://localhost/api/records/
+Generate your Invenio RDM instance::
 
-# DEV
-$ curl -k -H "Content-Type: application/json" https://localhost:5000/api/records/
+    cookiecutter https://github.com/inveniosoftware/cookiecutter-invenio-rdm.git -c v1.0
+
+More detailed steps can be found in the https://inveniosoftware.org/#getstarted
+
+Features
+--------
+
+- **Python package:** Python package for your service.
+- **Boilerplate files:** `README` including important badges.
+- **License:** `MIT <https://opensource.org/licenses/MIT>`_ file and headers.
+- ** TODO **
 
 
-# --- UPGRADE ---
-# Run a pipenv upgrade inside the docker container and echo the output outside the container
-# to the pipenv.lock file so the user has it
-$ generate pipenv.lock files
+Configuration
+-------------
+To generate correct files, please provide the following input to Cookiecutter:
 
-```
+============================ ==============================================================
+`project_name`                Full project name, might contain spaces.
+`project_shortname`           Project shortname, no spaces allowed, use `-` as a
+                              separator.
+`project_site`                Project website host.
+`package_name`                Package/Module name for Python, must follow `PEP 0008
+                              <https://www.python.org/dev/peps/pep-0008/>`_.
+`github_repo`                 GitHub repository of the project in form of `USER/REPO`,
+                              not the full GitHub URL.
+`**TODO**`                    `**TODO**`
+============================ ==============================================================
 
-NOTE: Pipfile contains Github commits as reference for:
-    - invenio-rdm-records
-    - invenio-app-rdm
-    - invenio-records-permissions
-
-## Upgrade instructions
-
-- UPGRADE
-- BUILD
-- SERVER
+Further documentation is available on https://invenio.readthedocs.io/
