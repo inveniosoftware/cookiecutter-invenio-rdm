@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-{% raw %}
 script_path=$(dirname "$0")
 pipfile_lock_path="$script_path/../Pipfile.lock"
 
@@ -17,5 +16,3 @@ pipenv run invenio collect -v
 pipenv run invenio webpack buildall
 
 cp -f $script_path/../static/images/logo.svg $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/static/images/logo.svg
-
-{% endraw %}
