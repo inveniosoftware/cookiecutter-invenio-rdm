@@ -56,5 +56,3 @@ To generate correct files, please provide the following input to Cookiecutter:
                               not the full GitHub URL.
 `**TODO**`                    `**TODO**`
 ============================ ==============================================================
-
-Further documentation is available on https://invenio.readthedocs.io/
