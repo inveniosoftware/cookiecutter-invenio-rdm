@@ -32,5 +32,3 @@ services:
     extends:
       file: docker-services.yml
       service: es
-  # Worker
-  # TODO

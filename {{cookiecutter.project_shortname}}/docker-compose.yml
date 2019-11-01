@@ -83,9 +83,19 @@ services:
       - es
       - mq
       - db
-  
   # Worker
-  # TODO
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
+    restart: "always"
+    command: ["celery worker -A invenio_app.celery --loglevel=INFO"]
+    image: {{cookiecutter.project_shortname}}
+    links:
+      - cache
+      - es
+      - mq
+      - db
 volumes:
   static_data:
   uploaded_data:
