@@ -15,7 +15,7 @@
 # - Message queue: RabbitMQ (exposed ports: 5672, 15672)
 # - Elasticsearch (exposed ports: 9200, 9300)
 #
-version: '2.3'
+version: '2.2'
 services:
   cache:
     extends:
