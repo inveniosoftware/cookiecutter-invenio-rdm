@@ -10,3 +10,4 @@ Contributors
 ============
 
 - Pablo Panero
+- Guillaume Viger
