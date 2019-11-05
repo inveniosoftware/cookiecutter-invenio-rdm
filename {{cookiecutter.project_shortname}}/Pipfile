@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = ">=1.0.0a2"}
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = ">=1.0.0a3"}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
