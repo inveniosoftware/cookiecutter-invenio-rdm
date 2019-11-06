@@ -15,7 +15,7 @@ addons:
 # See https://github.com/travis-ci/travis-ci/issues/8836
 sudo: required
 
-dist: trusty # Chrome driver fails if not trusty dist
+dist: bionic
 
 notifications:
   email: false

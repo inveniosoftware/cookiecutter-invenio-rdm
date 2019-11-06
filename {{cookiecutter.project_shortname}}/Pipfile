@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+check-manifest = ">=0.25"
 
 [packages]
 invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = ">=1.0.0a3"}
