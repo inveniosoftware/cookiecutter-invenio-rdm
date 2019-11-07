@@ -50,7 +50,7 @@ services:
       service: frontend
     volumes:
       - static_data:/opt/invenio/var/instance/static
-    links:
+    depends_on:
       - web-ui
       - web-api
     ports:
@@ -69,11 +69,16 @@ services:
       - static_data:/opt/invenio/var/instance/static
       - uploaded_data:/opt/invenio/var/instance/data
       - archived_data:/opt/invenio/var/instance/archive
-    links:
-      - cache
-      - es
-      - mq
-      - db
+    depends_on:
+      es:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      db:
+        condition: service_started
+      mq:
+        condition: service_started
+
   # API Rest Application
   web-api:
     extends:
@@ -86,11 +91,15 @@ services:
     volumes:
       - uploaded_data:/opt/invenio/var/instance/data
       - archived_data:/opt/invenio/var/instance/archive
-    links:
-      - cache
-      - es
-      - mq
-      - db
+    depends_on:
+      es:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      db:
+        condition: service_started
+      mq:
+        condition: service_started
   # Worker
   worker:
     extends:
@@ -99,11 +108,15 @@ services:
     restart: "always"
     command: ["celery worker -A invenio_app.celery --loglevel=INFO"]
     image: {{cookiecutter.project_shortname}}
-    links:
-      - cache
-      - es
-      - mq
-      - db
+    depends_on:
+      es:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      db:
+        condition: service_started
+      mq:
+        condition: service_started
 volumes:
   static_data:
   uploaded_data:
