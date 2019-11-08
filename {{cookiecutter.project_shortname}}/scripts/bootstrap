@@ -27,4 +27,4 @@ pipenv run invenio collect -v
 pipenv run invenio webpack buildall
 
 cp -f $script_path/../static/images/logo.svg $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/static/images/logo.svg
-ln --symbolic --force $(realpath $script_path/../invenio.cfg) $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/invenio.cfg
+ln -s -f $(realpath $script_path/../invenio.cfg) $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/invenio.cfg
