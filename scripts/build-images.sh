@@ -10,9 +10,9 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-script_path=$(dirname "$0")
+cd ${PROJECTDIR}
 
-pipfile_lock_path="$script_path/../Pipfile.lock"
+pipfile_lock_path="./Pipfile.lock"
 
 if [ ! -f $pipfile_lock_path ]; then
     echo "'Pipfile.lock' not found. Generate it by running 'pipenv lock'."

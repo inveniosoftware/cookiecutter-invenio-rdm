@@ -12,6 +12,8 @@
 
 set -e
 
+cd ${PROJECTDIR}
+
 if [ "$1" == "--dev" ]; then
     export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
 fi

@@ -16,6 +16,7 @@ set -o errexit
 set -o nounset
 
 WORKDIR=$(mktemp -d)
+TESTDIR=$(pwd)
 
 finish() {
     echo "Cleaning up."
@@ -33,10 +34,13 @@ cookiecutter --no-input -o "$WORKDIR" . \
     database=${COOKIECUTTER_DATABASE:-postgresql} \
     elasticsearch=${COOKIECUTTER_ELASTICSEARCH:-elasticsearch6}
 
-cd "${WORKDIR}/${PROJECT_NAME}"
+PROJECTDIR=${WORKDIR}/${PROJECT_NAME}
+export PROJECTDIR
 
 # Check local installation (this also generates the Pipfile.lock)
-./scripts/bootstrap
+${TESTDIR}/scripts/bootstrap
+
+cd PROJECTDIR
 
 # Initialize git in the repository for 'check-manifest' to work
 git init
@@ -46,11 +50,11 @@ git add -A
 pipenv run check-manifest -u || true
 
 # Build application docker images
-./docker/build-images.sh
+${TESTDIR}/scripts/build-images.sh
 # Fire up a full instance via docker-compose.full.yml
 # We will use the services (DB, ES, etc) for running the tests locally
 docker-compose -f docker-compose.full.yml up -d
-./docker/wait-for-services.sh --full
+${TESTDIR}/scripts/wait-for-services.sh --full
 echo "All services are up."
 
 docker-compose -f docker-compose.full.yml down
@@ -58,6 +62,6 @@ echo "Services successfully stopped"
 
 # Fire up the services we need for testing
 docker-compose up -d
-./docker/wait-for-services.sh
+${TESTDIR}/scripts/wait-for-services.sh
 # Run the instance tests
 # REQUIREMENTS=prod ./run-tests.sh

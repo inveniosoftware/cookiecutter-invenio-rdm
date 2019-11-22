@@ -12,8 +12,8 @@
 
 set -e
 
-script_path=$(dirname "$0")
-pipfile_lock_path="$script_path/../Pipfile.lock"
+cd ${PROJECTDIR}
+pipfile_lock_path="./Pipfile.lock"
 
 if [ ! -f $pipfile_lock_path ]; then
     echo "'Pipfile.lock' not found. Generating via 'pipenv lock --dev'..."
@@ -25,6 +25,3 @@ pipenv sync --dev --pre
 # Build assets
 pipenv run invenio collect -v
 pipenv run invenio webpack buildall
-
-cp -f $script_path/../static/images/logo.svg $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/static/images/logo.svg
-ln -s -f $(realpath $script_path/../invenio.cfg) $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")/invenio.cfg
