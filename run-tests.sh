@@ -40,7 +40,7 @@ export PROJECTDIR
 # Check local installation (this also generates the Pipfile.lock)
 ${TESTDIR}/scripts/bootstrap
 
-cd PROJECTDIR
+cd ${PROJECTDIR}
 
 # Initialize git in the repository for 'check-manifest' to work
 git init
