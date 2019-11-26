@@ -23,7 +23,7 @@ fi
 deps_ver=$(cat $pipfile_lock_path | python -c "import json,sys;print(json.load(sys.stdin)['_meta']['hash']['sha256'])")
 
 # Build dependencies image
-docker build -f Dockerfile.base -t {{cookiecutter.project_shortname}}-base:$deps_ver .
+docker build -f Dockerfile.base -t ${PROJECT_NAME}-base:$deps_ver .
 
 # Build application image
-docker build --build-arg DEPENDENCIES_VERSION=$deps_ver . -t {{cookiecutter.project_shortname}}
+docker build --build-arg DEPENDENCIES_VERSION=$deps_ver . -t ${PROJECT_NAME}

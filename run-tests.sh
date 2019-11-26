@@ -28,6 +28,7 @@ finish() {
 trap finish EXIT
 
 PROJECT_NAME="my-site"
+export PROJECT_NAME
 
 cookiecutter --no-input -o "$WORKDIR" . \
     project_name=${PROJECT_NAME} \
