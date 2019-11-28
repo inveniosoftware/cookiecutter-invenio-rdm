@@ -16,7 +16,7 @@ check_ready() {
     while ! $2
     do
         echo "Waiting for $1, $((RETRIES--)) remaining attempts..."
-        sleep 2
+        sleep 15
         if [ $RETRIES -eq 0 ]
         then
             echo "Couldn't reach $1"
