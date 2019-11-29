@@ -22,6 +22,7 @@ FROM {{cookiecutter.project_shortname}}-base:${DEPENDENCIES_VERSION}
 
 COPY ./ .
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
+COPY ./invenio.cfg ${INVENIO_INSTANCE_PATH}
 
 RUN invenio collect -v  && \
     invenio webpack create && \
