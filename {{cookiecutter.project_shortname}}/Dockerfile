@@ -30,7 +30,4 @@ RUN invenio collect -v  && \
     invenio webpack install --unsafe && \
     invenio webpack build
 
-ENV INVENIO_THEME_LOGO="images/logo.svg"
-ADD ./static/images/logo.svg ${INVENIO_INSTANCE_PATH}/static/images/logo.svg
-
 ENTRYPOINT [ "bash", "-c"]
