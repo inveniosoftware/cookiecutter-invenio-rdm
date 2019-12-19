@@ -7,9 +7,9 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = "==1.0.0a4"}
-invenio-rdm-records = "==1.0.0a6"
-invenio-records-permissions = "==1.0.0a4"
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = "==1.0.0a5"}
+invenio-rdm-records = "==1.0.0a8"
+invenio-records-permissions = "==1.0.0a6"
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
