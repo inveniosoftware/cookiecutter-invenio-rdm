@@ -4,8 +4,8 @@
 #
 # This file is part of Invenio.
 #
-# Copyright (C) 2019 CERN.
-# Copyright (C) 2019 Northwestern University.
+# Copyright (C) 2019-2020 CERN.
+# Copyright (C) 2019-2020 Northwestern University.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -25,13 +25,13 @@ check_ready() {
     done
 }
 
-if [[ ${COOKIECUTTER_DATABASE} == "postgresql" ]]
+if [[ ${COOKIECUTTER_DATABASE} == "mysql" ]]
 then
-    _db_check(){ docker-compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
-    check_ready "Postgres" _db_check
-else
     _db_check(){ docker-compose exec db bash -c "mysql -p${PROJECT_NAME} -e \"select Version();\"" &>/dev/null; }
     check_ready "MySQL" _db_check
+else
+    _db_check(){ docker-compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
+    check_ready "Postgres" _db_check
 fi
 
 _es_check(){ curl --output /dev/null --silent --head --fail http://localhost:9200 &>/dev/null; }
