@@ -25,6 +25,7 @@ RUN pipenv install --deploy --system
 COPY ./ .
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 COPY ./invenio.cfg ${INVENIO_INSTANCE_PATH}
+COPY ./templates/ ${INVENIO_INSTANCE_PATH}/templates/
 
 RUN invenio collect --verbose  && \
     invenio webpack create && \
