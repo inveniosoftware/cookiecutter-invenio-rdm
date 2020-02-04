@@ -8,5 +8,6 @@
     "author_email": "info@{{ cookiecutter.project_site }}",
     "year": "{% now 'local', '%Y' %}",
     "database": ["postgresql", "mysql", "sqlite"],
-    "elasticsearch": ["7", "6"]
+    "elasticsearch": ["7", "6"],
+    "file_storage": ["local", "S3"]
 }
