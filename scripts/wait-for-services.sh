@@ -25,6 +25,12 @@ check_ready() {
     done
 }
 
+if [ $COOKIECUTTER_FILE_STORAGE -eq "S3" ]
+then
+    _s3_check(){ curl --output /dev/null --silent --head --fail http://localhost:9000/minio/health/live &>/dev/null;}
+    check_ready "S3" _s3_check
+fi
+
 if [[ ${COOKIECUTTER_DATABASE} == "mysql" ]]
 then
     _db_check(){ docker-compose exec db bash -c "mysql -p${PROJECT_NAME} -e \"select Version();\"" &>/dev/null; }

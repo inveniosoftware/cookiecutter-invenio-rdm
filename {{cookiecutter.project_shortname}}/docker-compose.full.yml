@@ -43,6 +43,12 @@ services:
     extends:
       file: docker-services.yml
       service: es
+{%- if cookiecutter.file_storage == 'S3'%}
+  s3:
+    extends:
+      file: docker-services.yml
+      service: s3
+{%- endif %}
   # Frontend
   frontend:
     extends:
@@ -67,8 +73,10 @@ services:
       - "5000"
     volumes:
       - static_data:/opt/invenio/var/instance/static
+      {%- if cookiecutter.file_storage == 'local'%}
       - uploaded_data:/opt/invenio/var/instance/data
       - archived_data:/opt/invenio/var/instance/archive
+      {%- endif %}
     depends_on:
       es:
         condition: service_started
@@ -88,9 +96,11 @@ services:
     image: {{cookiecutter.project_shortname}}
     ports:
       - "5000"
+    {%- if cookiecutter.file_storage == 'local'%}
     volumes:
       - uploaded_data:/opt/invenio/var/instance/data
       - archived_data:/opt/invenio/var/instance/archive
+    {%- endif %}
     depends_on:
       es:
         condition: service_started
@@ -117,7 +127,14 @@ services:
         condition: service_started
       mq:
         condition: service_started
+
+{%- if cookiecutter.file_storage == 'S3'%}
+volumes:
+  static_data:
+  data:
+{%- else %}
 volumes:
   static_data:
   uploaded_data:
   archived_data:
+{%- endif %}
