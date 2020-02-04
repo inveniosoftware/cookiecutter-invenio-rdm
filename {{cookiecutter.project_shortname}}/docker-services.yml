@@ -121,3 +121,16 @@ services:
     command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
     ports:
       - "5555:5555"
+{%- if cookiecutter.file_storage == 'S3'%}
+  s3:
+    image: minio/minio
+    restart: "always"
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: CHANGE_ME
+      MINIO_SECRET_KEY: CHANGE_ME
+    volumes:
+      - data:/data
+    command: server /data
+{%- endif %}

@@ -41,3 +41,11 @@ services:
     extends:
       file: docker-services.yml
       service: es
+{%- if cookiecutter.file_storage == 'S3'%}
+  s3:
+    extends:
+      file: docker-services.yml
+      service: s3
+volumes:
+  data:
+{%- endif %}
