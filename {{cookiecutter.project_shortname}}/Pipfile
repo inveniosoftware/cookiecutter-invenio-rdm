@@ -11,7 +11,7 @@ invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cook
 invenio-rdm-records = "~=0.9.0"
 invenio-records-permissions = "~=0.7.0"
 {%- if cookiecutter.file_storage == 'S3'%}
-invenio-s3 = "==1.0.2"
+invenio-s3 = "~=1.0.2"
 {%- endif %}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
