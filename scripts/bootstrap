@@ -17,11 +17,11 @@ pipfile_lock_path="./Pipfile.lock"
 
 if [ ! -f $pipfile_lock_path ]; then
     echo "'Pipfile.lock' not found. Generating via 'pipenv lock --dev'..."
-    pipenv lock --dev --pre
+    pipenv lock --dev
 fi
 
 # Installs all packages specified in Pipfile.lock
-pipenv sync --dev --pre
+pipenv sync --dev
 # Build assets
 pipenv run invenio collect -v
 pipenv run invenio webpack buildall
