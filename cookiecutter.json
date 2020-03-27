@@ -1,6 +1,6 @@
 {
     "project_name": "My Site",
-    "project_shortname": "{{ cookiecutter.project_name | lower | replace(' ', '-') }}",
+    "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
     "project_site": "{{ cookiecutter.project_shortname }}.com",
     "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
     "description": "Invenio RDM {{ cookiecutter.project_name }} Instance",
