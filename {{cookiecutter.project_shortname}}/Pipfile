@@ -7,9 +7,9 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = "~=0.8.0"}
-invenio-rdm-records = "~=0.11.0"
-invenio-records-permissions = "~=0.7.0"
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"],version = "~=0.9.0"}
+invenio-rdm-records = "~=0.13.0"
+invenio-records-permissions = "~=0.8.0"
 {%- if cookiecutter.file_storage == 'S3'%}
 invenio-s3 = "~=1.0.2"
 {%- endif %}
