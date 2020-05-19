@@ -20,4 +20,4 @@ lxml = "<4.2.6,>=3.5.0"
 marshmallow = ">=3.3.0,<4.0.0"
 
 [requires]
-python_version = "3.6"
+python_version = "{{cookiecutter.python_version}}"
