@@ -37,14 +37,14 @@ Following is an overview of the generated files and folders:
 | ``docker-compose.full.yml`` | Example of a full infrastructure stack. |
 | ``docker-compose.yml`` | Backend services needed for local development. |
 | ``docker-services.yml`` | Common services for the Docker Compose files. |
-| ``invenio.cfg`` | The Invenio application configuratio. |
+| ``invenio.cfg`` | The Invenio application configuration. |
 | ``logs`` | Log files. |
 | ``static`` | Static files that need to be served as-is (e.g. images). |
 | ``templates`` | Folder for your Jinja templates. |
-| ``.invenio`` | File used by Invenio-CLI. |
-| ``.invenio.private`` | File used by Invenio-CLI. |
+| ``.invenio`` | Common file used by Invenio-CLI to be version controlled. |
+| ``.invenio.private`` | Private file used by Invenio-CLI *not* to be version controlled. |
 
 ## Documentation
 
-Do you want to learn how to configure, customize, deploy and much more. Visit
+To learn how to configure, customize, deploy and much more, visit
 the [InvenioRDM Documentation](https://inveniordm.docs.cern.ch/).
