@@ -20,9 +20,10 @@ TESTDIR=$(pwd)
 
 finish() {
     echo "Cleaning up."
-    docker-compose -f docker-compose.full.yml down --volumes --remove-orphans &
+    docker-compose -f ${PROJECTDIR}/docker-compose.full.yml down --volumes --remove-orphans &
     pipenv --rm || true
     rm -rf "${WORKDIR}"
+    echo "Test setup cleaned."
 }
 
 trap finish EXIT
