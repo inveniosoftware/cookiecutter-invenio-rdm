@@ -13,4 +13,4 @@
 cd ${PROJECTDIR}
 
 # Build application image
-docker build . --tag ${PROJECT_NAME}
+docker build . --tag ${PROJECT_NAME} --build-arg include_assets=true

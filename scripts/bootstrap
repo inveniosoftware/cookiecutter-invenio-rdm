@@ -21,7 +21,11 @@ if [ ! -f $pipfile_lock_path ]; then
 fi
 
 # Installs all packages specified in Pipfile.lock
-pipenv sync --dev
+pipenv sync --dev --pre
 # Build assets
+INVENIO_LOCAL_INSTANCE_PATH =  $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")
+cp -r ./static/. ${INVENIO_LOCAL_INSTANCE_PATH}/static/
+cp -r ./assets/. ${INVENIO_LOCAL_INSTANCE_PATH}/assets/
+
 pipenv run invenio collect -v
 pipenv run invenio webpack buildall
