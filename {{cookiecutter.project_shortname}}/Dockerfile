@@ -26,7 +26,9 @@ RUN if [ "$include_assets" = "true" ]; \
         cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
         cp -r ./assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
         invenio collect --verbose  && \
-        invenio webpack buildall \
+        invenio webpack create && \
+        invenio webpack install --unsafe && \
+        invenio webpack build \
     ; fi
 
 ENTRYPOINT [ "bash", "-c"]
