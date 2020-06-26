@@ -14,4 +14,4 @@ uwsgi-tools = ">=1.1.1"
 marshmallow = ">=3.3.0,<4.0.0"
 
 [requires]
-python_version = "{{cookiecutter.python_version}}"
+python_version = "{{ cookiecutter.python_version.split()[0] }}"
