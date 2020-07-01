@@ -11,7 +11,7 @@
 {% if cookiecutter.python_version.split()[0] == '3.6' -%}
 FROM inveniosoftware/centos7-python:3.6
 {%- elif cookiecutter.python_version.split()[0] == '3.7' -%}
-FROM inveniosoftware/centos7-python:3.7
+FROM inveniosoftware/centos8-python:3.7
 {%- elif cookiecutter.python_version.split()[0] == '3.8' -%}
 FROM inveniosoftware/centos8-python:3.8
 {%- endif %}
