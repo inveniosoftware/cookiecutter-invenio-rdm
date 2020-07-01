@@ -7,7 +7,7 @@
     "author_name": "CERN",
     "author_email": "info@{{ cookiecutter.project_site }}",
     "year": "{% now 'local', '%Y' %}",
-    "python_version": ["3.6", "3.7 (development only)", "3.8 (untested)"],
+    "python_version": ["3.6", "3.7 (beta)", "3.8 (beta)"],
     "database": ["postgresql", "mysql", "sqlite"],
     "elasticsearch": ["7", "6"],
     "file_storage": ["local", "S3"]
