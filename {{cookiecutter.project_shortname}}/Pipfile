@@ -7,11 +7,19 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.12.0"}
+importlib-metadata = ">=0.12,<2.0.0"
+invenio = "~=3.4.0a8"
+invenio-app-rdm =  {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.14.0"}
+invenio-drafts-resources = "~=0.4.0"
+invenio-rdm-records = "~=0.20.0"
+invenio-records = "~=1.4.0a4"
+invenio-records-permissions = "~=0.10.0"
+invenio-records-resources = "~=0.6.2"
+marshmallow-utils = "~=0.1.6"
+nbconvert = {extras = ["execute"], version = ">=4.1.0,<6.0.0"}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
-marshmallow = ">=3.3.0,<4.0.0"
 
 [requires]
 python_version = "{{ cookiecutter.python_version.split()[0] }}"
