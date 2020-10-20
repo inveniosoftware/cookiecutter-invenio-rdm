@@ -45,7 +45,7 @@ services:
       - "6379:6379"
   db:
     {%- if cookiecutter.database == 'postgresql'%}
-    image: postgres:9.6
+    image: postgres:12.4
     restart: "always"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
