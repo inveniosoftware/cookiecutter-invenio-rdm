@@ -10,12 +10,12 @@ check-manifest = ">=0.25"
 flask-resources = "~=0.3.2"
 importlib-metadata = ">=0.12,<2.0.0"
 invenio = "~=3.4.0a8"
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.16.0"}
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.16.4"}
 invenio-drafts-resources = "~=0.5.0"
-invenio-rdm-records = "~=0.23.0"
+invenio-rdm-records = "~=0.23.4"
 invenio-records-permissions = "~=0.10.0"
-invenio-records-resources = "~=0.7.0"
-marshmallow-utils = "~=0.2.2"
+invenio-records-resources = "~=0.7.4"
+marshmallow-utils = "~=0.3.2"
 nbconvert = {extras = ["execute"], version = ">=4.1.0,<6.0.0"}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
