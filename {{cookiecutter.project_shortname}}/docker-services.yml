@@ -72,9 +72,9 @@ services:
       - "5672:5672"
   es:
     {%- if cookiecutter.elasticsearch == '7' %}
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.3
     {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
     {%- endif %}
     restart: "always"
     environment:
@@ -96,9 +96,9 @@ services:
       - "9300:9300"
   kibana:
     {%- if cookiecutter.elasticsearch == '7'%}
-    image: docker.elastic.co/kibana/kibana-oss:7.2.0
+    image: docker.elastic.co/kibana/kibana-oss:7.9.3
     {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/kibana/kibana-oss:6.6.0
+    image: docker.elastic.co/kibana/kibana-oss:6.8.9
     {%- endif %}
     environment:
       - "ELASTICSEARCH_HOSTS=http://es:9200"
