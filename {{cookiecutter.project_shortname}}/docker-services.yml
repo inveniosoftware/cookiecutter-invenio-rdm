@@ -22,31 +22,23 @@ services:
       {%- endif %}
       - "INVENIO_WSGI_PROXIES=2"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
-  lb:
-    build: ./docker/haproxy/
-    image: {{cookiecutter.project_shortname}}-lb
-    restart: "always"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
   frontend:
     build: ./docker/nginx/
     image: {{cookiecutter.project_shortname}}-frontend
-    restart: "always"
+    restart: "unless-stopped"
     ports:
       - "80"
       - "443"
   cache:
     image: redis
-    restart: "always"
+    restart: "unless-stopped"
     read_only: true
     ports:
       - "6379:6379"
   db:
     {%- if cookiecutter.database == 'postgresql'%}
     image: postgres:12.4
-    restart: "always"
+    restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
       - "POSTGRES_PASSWORD={{cookiecutter.project_shortname}}"
@@ -55,7 +47,7 @@ services:
       - "5432:5432"
     {%- elif cookiecutter.database == 'mysql'%}
     image: mysql
-    restart: "always"
+    restart: "unless-stopped"
     environment:
       - "MYSQL_ROOT_PASSWORD={{cookiecutter.project_shortname}}"
       - "MYSQL_DATABAE={{cookiecutter.project_shortname}}"
@@ -66,7 +58,7 @@ services:
     {%- endif %}
   mq:
     image: rabbitmq:3-management
-    restart: "always"
+    restart: "unless-stopped"
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -76,7 +68,7 @@ services:
     {%- elif cookiecutter.elasticsearch == '6' %}
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
     {%- endif %}
-    restart: "always"
+    restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -94,26 +86,10 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-  kibana:
-    {%- if cookiecutter.elasticsearch == '7'%}
-    image: docker.elastic.co/kibana/kibana-oss:7.9.3
-    {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/kibana/kibana-oss:6.8.9
-    {%- endif %}
-    environment:
-      - "ELASTICSEARCH_HOSTS=http://es:9200"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "5601:5601"
-  flower:
-    image: mher/flower
-    command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
-    ports:
-      - "5555:5555"
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
     image: minio/minio
-    restart: "always"
+    restart: "unless-stopped"
     ports:
       - "9000:9000"
     environment:
