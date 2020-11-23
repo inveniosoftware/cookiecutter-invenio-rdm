@@ -16,8 +16,6 @@ FROM inveniosoftware/centos8-python:3.7
 FROM inveniosoftware/centos8-python:3.8
 {%- endif %}
 
-ARG include_assets
-
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system --pre
 
