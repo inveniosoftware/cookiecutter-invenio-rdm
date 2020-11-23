@@ -27,14 +27,11 @@ COPY ./templates/ ${INVENIO_INSTANCE_PATH}/templates/
 COPY ./app_data/ ${INVENIO_INSTANCE_PATH}/app_data/
 COPY ./ .
 
-RUN if [ "$include_assets" = "true" ]; \
-    then \
-        cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
-        cp -r ./assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
-        invenio collect --verbose  && \
-        invenio webpack create && \
-        invenio webpack install --unsafe && \
-        invenio webpack build \
-    ; fi
+RUN cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
+    cp -r ./assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
+    invenio collect --verbose  && \
+    invenio webpack create && \
+    invenio webpack install --unsafe && \
+    invenio webpack build
 
 ENTRYPOINT [ "bash", "-c"]
