@@ -9,7 +9,7 @@ check-manifest = ">=0.25"
 [packages]
 flask-resources = "~=0.3.2"
 importlib-metadata = ">=0.12,<2.0.0"
-invenio = "~=3.4.0a8"
+invenio = "~=3.4.0rc1"
 invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.18.0"}
 invenio-drafts-resources = "~=0.7.1"
 invenio-rdm-records = "~=0.25.0"
