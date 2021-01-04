@@ -7,14 +7,14 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-flask-resources = "~=0.3.2"
+flask-resources = "~=0.4.0"
 importlib-metadata = ">=0.12,<2.0.0"
 invenio = "~=3.4.0"
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.18.2"}
-invenio-drafts-resources = "~=0.7.1"
-invenio-rdm-records = "~=0.25.5"
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.18.4"}
+invenio-drafts-resources = "~=0.7.2"
+invenio-rdm-records = "~=0.25.7"
 invenio-records-permissions = "~=0.10.0"
-invenio-records-resources = "~=0.9.5"
+invenio-records-resources = "~=0.9.7"
 marshmallow-utils = "~=0.3.2"
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
