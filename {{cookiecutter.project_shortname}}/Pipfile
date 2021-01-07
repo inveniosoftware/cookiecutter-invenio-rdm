@@ -7,7 +7,7 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-flask-resources = "~=0.3.2"
+flask-resources = "~=0.4.0"
 importlib-metadata = ">=0.12,<2.0.0"
 invenio = "~=3.4.0"
 invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.18.2"}
