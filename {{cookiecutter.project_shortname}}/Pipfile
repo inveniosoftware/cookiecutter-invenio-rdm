@@ -7,18 +7,15 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-flask-resources = "~=0.4.0"
-importlib-metadata = ">=0.12,<2.0.0"
 invenio = "~=3.4.0"
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.18.7"}
-invenio-drafts-resources = "~=0.7.2"
-invenio-rdm-records = "~=0.25.8"
-invenio-records-permissions = "~=0.10.0"
-invenio-records-resources = "~=0.9.7"
-marshmallow-utils = "~=0.3.2"
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=0.19.2"}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
 
 [requires]
 python_version = "{{ cookiecutter.python_version.split()[0] }}"
+
+[pipenv]
+# Needed for invenio-records>v1.5.0a1
+allow_prereleases = true
