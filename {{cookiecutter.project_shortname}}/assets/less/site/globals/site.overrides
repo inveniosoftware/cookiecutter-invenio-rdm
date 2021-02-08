@@ -1,1 +1,1 @@
-@import "../../theme.less";
+@import "@less/invenio_app_rdm/theme";
