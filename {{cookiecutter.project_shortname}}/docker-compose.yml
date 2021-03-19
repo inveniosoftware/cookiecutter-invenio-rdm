@@ -12,6 +12,8 @@
 # - DB: (PostgresSQL/MySQL) (exposed port: 5432 or 3306)
 # - Message queue: RabbitMQ (exposed ports: 5672, 15672)
 # - Elasticsearch (exposed ports: 9200, 9300)
+# - Kibana (view ES indexes) (exposed ports: 5601)
+# - Flower (monitor Celery task) (exposed ports: 5555)
 #
 version: '2.2'
 services:
@@ -31,6 +33,14 @@ services:
     extends:
       file: docker-services.yml
       service: es
+  kibana:
+    extends:
+      file: docker-services.yml
+      service: kibana
+  flower:
+    extends:
+      file: docker-services.yml
+      service: flower
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
     extends:
