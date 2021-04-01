@@ -23,12 +23,10 @@ services:
     extends:
       file: docker-services.yml
       service: cache
-{%- if cookiecutter.database != 'sqlite'%}
   db:
     extends:
       file: docker-services.yml
       service: db
-{%- endif %}
   mq:
     extends:
       file: docker-services.yml
