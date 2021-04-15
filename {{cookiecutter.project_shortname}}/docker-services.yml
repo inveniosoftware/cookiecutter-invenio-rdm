@@ -58,7 +58,7 @@ services:
       - "3306:3306"
     {%- endif %}
   mq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.8-management
     restart: "unless-stopped"
     ports:
       - "15672:15672"
