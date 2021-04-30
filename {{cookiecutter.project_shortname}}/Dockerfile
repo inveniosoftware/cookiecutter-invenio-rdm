@@ -16,6 +16,8 @@ FROM inveniosoftware/centos8-python:3.7
 FROM inveniosoftware/centos8-python:3.8
 {%- endif %}
 
+RUN yum install -y dejavu-sans-fonts
+
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system --pre
 
