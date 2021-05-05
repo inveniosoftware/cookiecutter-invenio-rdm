@@ -6,6 +6,7 @@
 #
 # Copyright (C) 2019 CERN.
 # Copyright (C) 2019 Northwestern University.
+# Copyright (C) 2021 Esteban J. G. Gabancho.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -27,8 +28,7 @@ pipenv run invenio index init --force
 pipenv run invenio index queue init purge
 if [ $COOKIECUTTER_FILE_STORAGE -eq "S3" ]
 then
-docker-compose exec s3 bash -c "mc mb default-bucket" &>/dev/null;
-pipenv run invenio files location s3-default s3://default-bucket --default
+pipenv run invenio files location s3-default s3://default --default
 else
 pipenv run invenio files location --default 'default-location'  $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")
 fi

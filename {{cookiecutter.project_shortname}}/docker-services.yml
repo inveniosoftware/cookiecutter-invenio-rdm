@@ -126,6 +126,6 @@ services:
       MINIO_ACCESS_KEY: CHANGE_ME
       MINIO_SECRET_KEY: CHANGE_ME
     volumes:
-      - data:/data
+      - ./data:/data
     command: server /data
 {%- endif %}
