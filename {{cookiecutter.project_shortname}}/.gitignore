@@ -66,3 +66,7 @@ logs/
 
 # Invenio-cli per machine file
 .invenio.private
+
+# S3 default bucket location
+data/default/*
+data/.minio.sys
