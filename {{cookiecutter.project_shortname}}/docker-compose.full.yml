@@ -90,7 +90,6 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    restart: "always"
     command: ["celery -A invenio_app.celery worker --loglevel=INFO"]
     image: {{cookiecutter.project_shortname}}
     depends_on:
