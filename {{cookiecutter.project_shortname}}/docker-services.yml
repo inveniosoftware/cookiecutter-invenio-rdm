@@ -64,10 +64,10 @@ services:
       - "15672:15672"
       - "5672:5672"
   es:
-    {%- if cookiecutter.elasticsearch == '7' %}
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.3
+    {%- if cookiecutter.elasticsearch == '7' %}{# Do not update to 7.11 #}
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.14
     {%- endif %}
     restart: "unless-stopped"
     environment:
@@ -87,6 +87,24 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+{%- if cookiecutter.development_tools == 'yes'%}
+  kibana:
+    {%- if cookiecutter.elasticsearch == '7'%}{# Do not update to 7.11 #}
+    image: docker.elastic.co/kibana/kibana-oss:7.10.2
+    {%- elif cookiecutter.elasticsearch == '6' %}
+    image: docker.elastic.co/kibana/kibana-oss:6.8.14
+    {%- endif %}
+    environment:
+      - "ELASTICSEARCH_HOSTS=http://es:9200"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "5601:5601"
+  flower:
+    image: mher/flower
+    command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
+    ports:
+      - "5555:5555"
+{%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
     image: minio/minio

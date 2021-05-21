@@ -10,5 +10,6 @@
     "python_version": ["3.8", "3.7", "3.6", "3.9 (alpha)"],
     "database": ["postgresql", "mysql"],
     "elasticsearch": ["7", "6"],
-    "file_storage": ["local", "S3"]
+    "file_storage": ["local", "S3"],
+    "development_tools": ["yes", "no"]
 }
