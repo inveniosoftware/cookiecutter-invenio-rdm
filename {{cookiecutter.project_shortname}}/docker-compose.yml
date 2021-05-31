@@ -31,6 +31,22 @@ services:
     extends:
       file: docker-services.yml
       service: es
+{%- if cookiecutter.development_tools == 'yes'%}
+  kibana:
+    extends:
+      file: docker-services.yml
+      service: kibana
+  flower:
+    extends:
+      file: docker-services.yml
+      service: flower
+  {%- if cookiecutter.database == 'postgresql'%}
+  pgAdmin:
+    extends:
+      file: docker-services.yml
+      service: pgAdmin
+  {%- endif %}
+{%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
     extends:
