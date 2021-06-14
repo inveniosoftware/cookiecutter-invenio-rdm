@@ -1,0 +1,49 @@
+- id: particle
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Particle Physics
+- id: nuclear
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Nuclear Physics
+- id: cosmo
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Cosmology
+- id: astro
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Astrophysics
+- id: bio
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Biology
+- id: chem
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Chemistry
+- id: cs
+   props:
+     subjectScheme: Science
+   tags:
+     - science
+   title:
+     en: Computing
