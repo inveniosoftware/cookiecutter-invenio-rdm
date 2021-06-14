@@ -36,8 +36,8 @@ services:
     read_only: true
     ports:
       - "6379:6379"
+  {%- if cookiecutter.database == 'postgresql'%}
   db:
-    {%- if cookiecutter.database == 'postgresql'%}
     image: postgres:12.4
     restart: "unless-stopped"
     environment:
@@ -46,7 +46,17 @@ services:
       - "POSTGRES_DB={{cookiecutter.project_shortname}}"
     ports:
       - "5432:5432"
-    {%- elif cookiecutter.database == 'mysql'%}
+  pgadmin:
+    image: dpage/pgadmin4:5.2
+    restart: "unless-stopped"
+    ports:
+      - "5050:80"
+      - "5051:443"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
+      PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
+  {%- elif cookiecutter.database == 'mysql'%}
+  db:
     image: mysql
     restart: "unless-stopped"
     environment:
@@ -56,7 +66,15 @@ services:
       - "MYSQL_PASSWORD={{cookiecutter.project_shortname}}"
     ports:
       - "3306:3306"
-    {%- endif %}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: "unless-stopped"
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
+  {%- endif %}
   mq:
     image: rabbitmq:3.8-management
     restart: "unless-stopped"
