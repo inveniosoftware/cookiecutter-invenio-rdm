@@ -19,3 +19,7 @@ openssl req -x509 -newkey rsa:4096 -nodes -out docker/nginx/test.crt -keyout doc
 
 echo "-------------------------------------------------------------------------------"
 
+{%- if cookiecutter.file_storage == 'S3' %}
+mkdir -p data/default
+touch data/default/.gitkeep
+{%- endif %}
