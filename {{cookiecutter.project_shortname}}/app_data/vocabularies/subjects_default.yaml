@@ -1,0 +1,36 @@
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/1"
+  scheme: Default
+  subject: Particle Physics
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/2"
+  scheme: Default
+  subject: Nuclear Physics
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/3"
+  scheme: Default
+  subject: Cosmoloy
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/4"
+  scheme: Default
+  subject: Astrophysics
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/5"
+  scheme: Default
+  subject: Biology
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/6"
+  scheme: Default
+  subject: Chemistry
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/7"
+  scheme: Default
+  subject: Computing
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/8"
+  scheme: Default
+  subject: Neurology
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/9"
+  scheme: Default
+  subject: Pediatrics
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/10"
+  scheme: Default
+  subject: Child
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/11"
+  scheme: Default
+  subject: Neurosurgery
+- id: "https://inveniosoftware.org/products/rdm/subjects/default/12"
+  scheme: Default
+  subject: World War II

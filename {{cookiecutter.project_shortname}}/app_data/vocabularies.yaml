@@ -1,3 +1,8 @@
-subjects:
-  pid-type: subj
-  data-file: vocabularies/subjects.yaml
+# TODO: Uncomment this if you want to have some default subjects.
+# subjects:
+#   pid-type: sub
+#   schemes:
+#     - id: Default
+#       name: Default demo example subjects
+#       uri: "https://inveniosoftware.org/products/rdm/"
+#       data-file: vocabularies/subjects_default.yaml
