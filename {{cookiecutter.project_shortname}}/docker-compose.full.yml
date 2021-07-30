@@ -17,7 +17,6 @@
 # - Message queue: RabbitMQ (exposed ports: 5672, 15672)
 # - Elasticsearch (exposed ports: 9200, 9300)
 # - Kibana (view ES indexes) (exposed ports: 5601)
-# - Flower (monitor Celery task) (exposed ports: 5555)
 #
 version: '2.2'
 services:
@@ -42,10 +41,6 @@ services:
     extends:
       file: docker-services.yml
       service: kibana
-  flower:
-    extends:
-      file: docker-services.yml
-      service: flower
   {%- if cookiecutter.database == 'postgresql'%}
   pgadmin:
     extends:
