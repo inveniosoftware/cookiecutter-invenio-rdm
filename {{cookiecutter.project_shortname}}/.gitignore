@@ -70,3 +70,6 @@ logs/
 # S3 default bucket location
 data/default/*
 data/.minio.sys
+
+# Celery
+celerybeat-schedule
