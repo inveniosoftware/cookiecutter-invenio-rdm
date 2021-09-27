@@ -55,6 +55,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
   {%- elif cookiecutter.database == 'mysql'%}
   db:
     image: mysql
