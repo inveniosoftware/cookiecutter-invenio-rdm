@@ -7,7 +7,7 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=6.0.0"}
+invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=7.0.0.dev0"}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
@@ -16,5 +16,5 @@ uwsgi-tools = ">=1.1.1"
 python_version = "{{ cookiecutter.python_version.split()[0] }}"
 
 [pipenv]
-# Needed for invenio-records>v1.5.0b2
+# Needed for invenio-records>v1.5.0b2 and invenio-communities
 allow_prereleases = true
