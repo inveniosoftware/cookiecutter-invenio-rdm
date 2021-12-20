@@ -78,7 +78,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_ui.ini"]
-    image: {{cookiecutter.project_shortname}}
+    image: {{cookiecutter.project_shortname}}:latest
     ports:
       - "5000"
     volumes:
@@ -94,7 +94,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_rest.ini"]
-    image: {{cookiecutter.project_shortname}}
+    image: {{cookiecutter.project_shortname}}:latest
     ports:
       - "5000"
     {%- if cookiecutter.file_storage == 'local'%}
@@ -109,7 +109,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["celery -A invenio_app.celery worker --loglevel=INFO"]
-    image: {{cookiecutter.project_shortname}}
+    image: {{cookiecutter.project_shortname}}:latest
     depends_on:
       es:
         condition: service_started
