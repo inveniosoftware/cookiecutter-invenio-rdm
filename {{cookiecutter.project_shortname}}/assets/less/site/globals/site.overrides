@@ -1,1 +1,2 @@
 @import "@less/invenio_app_rdm/theme";
+@import "site.variables";
