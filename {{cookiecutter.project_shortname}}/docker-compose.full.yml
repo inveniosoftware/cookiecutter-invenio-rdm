@@ -15,8 +15,8 @@
 # - Cache: Redis (exposed port: 6379)
 # - DB: (PostgresSQL/MySQL) (exposed port: 5432 or 3306)
 # - Message queue: RabbitMQ (exposed ports: 5672, 15672)
-# - Elasticsearch (exposed ports: 9200, 9300)
-# - Kibana (view ES indexes) (exposed ports: 5601)
+# - Search platform: (OpenSearch/Elasticsearch) (exposed ports: 9200, 9300)
+# - OpenSearch Dashboard/Kibana (view OS/ES indexes) (exposed ports: 5601)
 #
 version: '2.2'
 services:
@@ -32,15 +32,22 @@ services:
     extends:
       file: docker-services.yml
       service: mq
-  es:
+  search:
     extends:
       file: docker-services.yml
-      service: es
+      service: search
 {%- if cookiecutter.development_tools == 'yes'%}
+  {%- if cookiecutter.search == 'elasticsearch7'%}
   kibana:
     extends:
       file: docker-services.yml
       service: kibana
+  {%- elif cookiecutter.search == 'opensearch1'%}
+  opensearch-dashboards:
+    extends:
+      file: docker-services.yml
+      service: opensearch-dashboards
+  {%- endif %}
   {%- if cookiecutter.database == 'postgresql'%}
   pgadmin:
     extends:

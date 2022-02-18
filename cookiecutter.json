@@ -1,15 +1,15 @@
 {
-    "project_name": "My Site",
-    "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
-    "project_site": "{{ cookiecutter.project_shortname }}.com",
-    "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
-    "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
-    "author_name": "CERN",
-    "author_email": "info@{{ cookiecutter.project_site }}",
-    "year": "{% now 'local', '%Y' %}",
-    "python_version": ["3.8", "3.7", "3.9"],
-    "database": ["postgresql"],
-    "elasticsearch": ["7"],
-    "file_storage": ["local", "S3"],
-    "development_tools": ["yes", "no"]
+  "project_name": "My Site",
+  "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
+  "project_site": "{{ cookiecutter.project_shortname }}.com",
+  "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
+  "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
+  "author_name": "CERN",
+  "author_email": "info@{{ cookiecutter.project_site }}",
+  "year": "{% now 'local', '%Y' %}",
+  "python_version": ["3.8", "3.7", "3.9"],
+  "database": ["postgresql"],
+  "search": ["opensearch1", "elasticsearch7"],
+  "file_storage": ["local", "S3"],
+  "development_tools": ["yes", "no"]
 }
