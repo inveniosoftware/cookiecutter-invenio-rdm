@@ -40,8 +40,12 @@ else
     check_ready "Postgres" _db_check
 fi
 
-_es_check(){ curl --output /dev/null --silent --head --fail http://localhost:9200 &>/dev/null; }
-check_ready "Elasticsearch" _es_check
+_search_check(){ curl --output /dev/null --silent --head --fail http://localhost:9200 &>/dev/null; }
+if [[ ${COOKIECUTTER_SEARCH} == "elasticsearch7" ]]
+    check_ready "Elasticsearch" _search_check
+else
+    check_ready "OpenSearch" _search_check
+fi
 
 _redis_check(){ docker-compose exec cache bash -c 'redis-cli ping' | grep 'PONG' &> /dev/null; }
 check_ready "Redis" _redis_check

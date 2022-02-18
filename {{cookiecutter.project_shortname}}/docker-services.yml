@@ -83,12 +83,38 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-  es:
-    {%- if cookiecutter.elasticsearch == '7' %}{# Do not update to 7.11 #}
+  {%- if cookiecutter.search == 'opensearch1'%}
+  search:
+    image: opensearchproject/opensearch:1.3.4
+    restart: "unless-stopped"
+    environment:
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - plugins.security.disabled=true  # NOTE: this shouldn't be used in production!
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 2g
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:1.3.4
+    container_name: opensearch-dashboards
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      - "OPENSEARCH_HOSTS=http://search:9200"
+  {%- elif cookiecutter.search == 'elasticsearch7' %}{# Do not update to 7.11 #}
+  search:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
-    {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.14
-    {%- endif %}
     restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
@@ -103,21 +129,18 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 2g
     ports:
       - "9200:9200"
       - "9300:9300"
   kibana:
-    {%- if cookiecutter.elasticsearch == '7'%}{# Do not update to 7.11 #}
     image: docker.elastic.co/kibana/kibana-oss:7.10.2
-    {%- elif cookiecutter.elasticsearch == '6' %}
-    image: docker.elastic.co/kibana/kibana-oss:6.8.14
-    {%- endif %}
     environment:
-      - "ELASTICSEARCH_HOSTS=http://es:9200"
+      - "ELASTICSEARCH_HOSTS=http://search:9200"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "5601:5601"
+  {%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
     image: minio/minio
