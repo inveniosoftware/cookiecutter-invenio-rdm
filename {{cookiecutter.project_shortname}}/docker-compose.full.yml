@@ -110,6 +110,10 @@ services:
       service: app
     command: ["celery -A invenio_app.celery worker --loglevel=INFO"]
     image: {{cookiecutter.project_shortname}}:latest
+    {%- if cookiecutter.file_storage == 'local'%}
+    volumes:
+      - uploaded_data:/opt/invenio/var/instance/data
+    {%- endif %}
     depends_on:
       es:
         condition: service_started
