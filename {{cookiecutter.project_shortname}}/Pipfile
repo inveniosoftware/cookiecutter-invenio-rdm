@@ -5,8 +5,6 @@ verify_ssl = true
 
 [dev-packages]
 check-manifest = ">=0.25"
-# REMOVE setuptools line once celery 5.2.4 has been released.
-setuptools = ">=59.1.1,<59.7.0"
 
 [packages]
 invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "elasticsearch{{cookiecutter.elasticsearch}}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=9.0.0.dev0"}
