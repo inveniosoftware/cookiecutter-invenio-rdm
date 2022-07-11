@@ -16,5 +16,4 @@ uwsgi-tools = ">=1.1.1"
 python_version = "{{ cookiecutter.python_version.split()[0] }}"
 
 [pipenv]
-# Needed for invenio>v3.5.0a4 and invenio-communities
-allow_prereleases = true
+allow_prereleases = false
