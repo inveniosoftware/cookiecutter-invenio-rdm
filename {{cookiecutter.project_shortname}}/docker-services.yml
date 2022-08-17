@@ -31,7 +31,7 @@ services:
       - "80"
       - "443"
   cache:
-    image: redis
+    image: redis:7
     restart: "unless-stopped"
     read_only: true
     ports:
@@ -78,7 +78,7 @@ services:
       MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
   {%- endif %}
   mq:
-    image: rabbitmq:3.8-management
+    image: rabbitmq:3-management
     restart: "unless-stopped"
     ports:
       - "15672:15672"
