@@ -55,7 +55,7 @@ pipenv run check-manifest -u || true
 # Build application docker images
 ${TESTDIR}/scripts/build-images.sh
 # Fire up a full instance via docker-compose.full.yml
-# We will use the services (DB, ES, etc) for running the tests locally
+# We will use the services (DB, OS/ES, etc) for running the tests locally
 docker-compose -f docker-compose.full.yml up -d
 ${TESTDIR}/scripts/wait-for-services.sh --full
 echo "All services are up."
