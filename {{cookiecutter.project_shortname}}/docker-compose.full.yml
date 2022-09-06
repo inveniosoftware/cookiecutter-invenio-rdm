@@ -122,7 +122,7 @@ services:
       - uploaded_data:/opt/invenio/var/instance/data
     {%- endif %}
     depends_on:
-      es:
+      search:
         condition: service_started
       cache:
         condition: service_started
