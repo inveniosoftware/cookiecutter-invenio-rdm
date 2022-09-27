@@ -17,7 +17,7 @@ FROM inveniosoftware/centos7-python:3.9
 {%- endif %}
 
 COPY Pipfile Pipfile.lock ./
-RUN pipenv install --deploy --system --pre
+RUN pipenv install --deploy --system
 
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 COPY ./invenio.cfg ${INVENIO_INSTANCE_PATH}

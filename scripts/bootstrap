@@ -16,12 +16,12 @@ cd ${PROJECTDIR}
 pipfile_lock_path="./Pipfile.lock"
 
 if [ ! -f $pipfile_lock_path ]; then
-    echo "'Pipfile.lock' not found. Generating via 'pipenv lock --dev'..."
-    pipenv lock --dev --pre
+    echo "'Pipfile.lock' not found. Generating via 'pipenv lock'..."
+    pipenv lock
 fi
 
 # Installs all packages specified in Pipfile.lock
-pipenv sync --dev --pre
+pipenv sync
 # Build assets
 INVENIO_LOCAL_INSTANCE_PATH=$(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")
 cp -r ./static/. ${INVENIO_LOCAL_INSTANCE_PATH}/static/
