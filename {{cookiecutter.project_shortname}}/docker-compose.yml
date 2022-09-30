@@ -38,7 +38,7 @@ services:
     extends:
       file: docker-services.yml
       service: kibana
-  {%- elif cookiecutter.search == 'opensearch1'%}
+  {%- elif cookiecutter.search in ['opensearch1', 'opensearch2']%}
   opensearch-dashboards:
     extends:
       file: docker-services.yml
