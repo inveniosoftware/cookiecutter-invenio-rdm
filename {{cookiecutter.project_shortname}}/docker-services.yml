@@ -114,7 +114,6 @@ services:
       - "9600:9600"
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:{{ dashboards_version }}
-    container_name: opensearch-dashboards
     ports:
       - "5601:5601"
     expose:
