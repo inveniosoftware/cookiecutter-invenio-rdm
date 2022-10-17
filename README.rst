@@ -55,5 +55,6 @@ To generate correct files, please provide the following input to Cookiecutter:
                               <https://www.python.org/dev/peps/pep-0008/>`_.
 `github_repo`                 GitHub repository of the project in form of `USER/REPO`,
                               not the full GitHub URL.
+`site_code`                   Project code folder. Used for extending existing codebase.
 `**TODO**`                    `**TODO**`
 ============================ ==============================================================

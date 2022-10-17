@@ -16,6 +16,7 @@ FROM inveniosoftware/centos8-python:3.8
 FROM inveniosoftware/centos7-python:3.9
 {%- endif %}
 
+COPY site ./site
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system
 
