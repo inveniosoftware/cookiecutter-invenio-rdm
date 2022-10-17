@@ -23,3 +23,10 @@ echo "--------------------------------------------------------------------------
 mkdir -p data/default
 touch data/default/.gitkeep
 {%- endif %}
+
+{%- if cookiecutter.site_code == 'no'%}
+DIR="site"
+if [ -d "$DIR" ]; then
+  rm -r site
+fi
+{% endif %}
