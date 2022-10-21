@@ -13,7 +13,9 @@ FROM inveniosoftware/centos7-python:3.7
 {%- elif cookiecutter.python_version.split()[0] == '3.8' -%}
 FROM inveniosoftware/centos8-python:3.8
 {%- elif cookiecutter.python_version.split()[0] == '3.9' -%}
-FROM inveniosoftware/centos7-python:3.9
+# enabling multi-platform builds
+# using front-matter image until upstream image is available via inveniosoftware
+FROM --platform=$BUILDPLATFORM ghcr.io/front-matter/almalinux:1.0.0-beta.2
 {%- endif %}
 
 COPY Pipfile Pipfile.lock ./
