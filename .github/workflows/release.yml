@@ -9,16 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./Dockerfile
-            image: ghcr.io/${{ github.repository_owner }}/invenio-rdm
-            context: .
-          - dockerfile: ./docker/nginx/Dockerfile
-            image: ghcr.io/${{ github.repository_owner }}/invenio-rdm-nginx
-            context: ./docker/nginx/
     steps:
       - name: Checkout
         uses: actions/checkout@v3.1.0
