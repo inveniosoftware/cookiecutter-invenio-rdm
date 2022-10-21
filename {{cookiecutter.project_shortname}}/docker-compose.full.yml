@@ -20,6 +20,29 @@
 #
 version: '2.2'
 services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+
+      # use default Traefic TLS certificate (browser may give warnings)
+      - --entrypoints.websecure.address=:443
+      - --api.insecure
+    labels:
+      # middleware redirect
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      
+      # global redirect to https
+      - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.redirs.entrypoints=web"
+      - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
   cache:
     extends:
       file: docker-services.yml
@@ -85,7 +108,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_ui.ini"]
-    image: {{cookiecutter.project_shortname}}:latest
+    image: ghcr.io/{{cookiecutter.project_shortname}}:latest
     ports:
       - "5000"
     volumes:
@@ -101,7 +124,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_rest.ini"]
-    image: {{cookiecutter.project_shortname}}:latest
+    image: ghcr.io/{{cookiecutter.project_shortname}}:latest
     ports:
       - "5000"
     {%- if cookiecutter.file_storage == 'local'%}
@@ -116,7 +139,7 @@ services:
       file: docker-services.yml
       service: app
     command: ["celery -A invenio_app.celery worker --loglevel=INFO"]
-    image: {{cookiecutter.project_shortname}}:latest
+    image: ghcr.io/{{cookiecutter.project_shortname}}:latest
     {%- if cookiecutter.file_storage == 'local'%}
     volumes:
       - uploaded_data:/opt/invenio/var/instance/data
