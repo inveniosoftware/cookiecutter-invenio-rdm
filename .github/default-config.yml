@@ -10,5 +10,5 @@ default_context:
   python_version: "3.9"
   database: postgresql
   search: opensearch2
-  file_storage: s3
+  file_storage: "s3"
   development_tools: no

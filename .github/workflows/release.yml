@@ -21,7 +21,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install cookiecutter
           cookiecutter gh:front-matter/cookiecutter-invenio-rdm --no-input --config-file ./.github/default-config.yml
-
+          ls -l demo-inveniordm
       # - name: Generate Docker metadata
       #   id: meta
       #   uses: docker/metadata-action@v4
