@@ -18,16 +18,59 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.1.0
+
+      - name: Run Trivy static code analysis
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          security-checks: 'vuln,secret,config'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy static code analysis results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'fs'
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9' 
+
       - name: Setup files and folders using cookiecutter
         run: |
           python -m pip install --upgrade pipenv cookiecutter
           cookiecutter gh:front-matter/cookiecutter-invenio-rdm --no-input --config-file ./.github/default-config.yml
           cd invenio-rdm
           pipenv lock
+
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/invenio-rdm:${{ github.sha }} ./almalinux/
+
+      - name: Run Trivy image scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ghcr.io/${{ github.repository_owner }}/invenio-rdm:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy image scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'image'
+          
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@v4
