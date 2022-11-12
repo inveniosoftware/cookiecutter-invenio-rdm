@@ -18,6 +18,7 @@ FROM inveniosoftware/centos8-python:3.8
 FROM --platform=$BUILDPLATFORM ghcr.io/front-matter/almalinux:1.0.0-beta.2
 {%- endif %}
 
+COPY site ./site
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system
 
@@ -25,6 +26,7 @@ COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 COPY ./invenio.cfg ${INVENIO_INSTANCE_PATH}
 COPY ./templates/ ${INVENIO_INSTANCE_PATH}/templates/
 COPY ./app_data/ ${INVENIO_INSTANCE_PATH}/app_data/
+COPY ./translations/ ${INVENIO_INSTANCE_PATH}/translations/
 COPY ./ .
 
 RUN cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
