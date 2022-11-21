@@ -8,11 +8,6 @@
   "author_name": "CERN",
   "author_email": "info@{{ cookiecutter.project_site }}",
   "year": "{% now 'local', '%Y' %}",
-  "python_version": [
-    "3.8",
-    "3.7",
-    "3.9"
-  ],
   "database": [
     "postgresql"
   ],
