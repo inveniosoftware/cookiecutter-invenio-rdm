@@ -16,7 +16,7 @@ uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
 
 [requires]
-python_version = "{{ cookiecutter.python_version.split()[0] }}"
+python_version = "3.9"
 
 [pipenv]
 allow_prereleases = false
