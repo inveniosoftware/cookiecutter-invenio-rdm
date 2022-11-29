@@ -47,11 +47,10 @@ services:
     ports:
       - "5432:5432"
   pgadmin:
-    image: dpage/pgadmin4:5.2
+    image: dpage/pgadmin4:6
     restart: "unless-stopped"
     ports:
       - "5050:80"
-      - "5051:443"
     environment:
       PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
