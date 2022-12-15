@@ -7,11 +7,10 @@ Welcome to your InvenioRDM instance.
 Run the following commands in order to start your new InvenioRDM instance:
 
 ```console
-invenio-cli containerize
-invenio-cli demo --containers
+invenio-cli containers start --lock --build --setup
 ```
 
-The above commands first builds the application docker image and afterwards
+The above command first builds the application docker image and afterwards
 starts the application and related services (database, Elasticsearch, Redis
 and RabbitMQ). The build and boot process will take some time to complete,
 especially the first time as docker images have to be downloaded during the
