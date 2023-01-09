@@ -31,14 +31,14 @@ services:
       - "80"
       - "443"
   cache:
-    image: redis:7
+    image: registry.cern.ch/docker.io/library/redis:7
     restart: "unless-stopped"
     read_only: true
     ports:
       - "6379:6379"
   {%- if cookiecutter.database == 'postgresql'%}
   db:
-    image: postgres:12.4
+    image: registry.cern.ch/docker.io/library/postgres:12.4
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
@@ -47,7 +47,7 @@ services:
     ports:
       - "5432:5432"
   pgadmin:
-    image: dpage/pgadmin4:6
+    image: registry.cern.ch/docker.io/dpage/pgadmin4:6
     restart: "unless-stopped"
     ports:
       - "5050:80"
@@ -58,7 +58,7 @@ services:
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
   {%- elif cookiecutter.database == 'mysql'%}
   db:
-    image: mysql
+    image: registry.cern.ch/docker.io/library/mysql
     restart: "unless-stopped"
     environment:
       - "MYSQL_ROOT_PASSWORD={{cookiecutter.project_shortname}}"
@@ -77,7 +77,7 @@ services:
       MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
   {%- endif %}
   mq:
-    image: rabbitmq:3-management
+    image: registry.cern.ch/docker.io/library/rabbitmq:3-management
     restart: "unless-stopped"
     ports:
       - "15672:15672"
@@ -91,7 +91,7 @@ services:
       {%- set dashboards_version = "2.3.0" %}
     {%- endif %}
   search:
-    image: opensearchproject/opensearch:{{ os_version }}
+    image: registry.cern.ch/docker.io/opensearchproject/opensearch:{{ os_version }}
     restart: "unless-stopped"
     environment:
       # settings only for development. DO NOT use in production!
@@ -112,7 +112,7 @@ services:
       - "9200:9200"
       - "9600:9600"
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:{{ dashboards_version }}
+    image: registry.cern.ch/docker.io/opensearchproject/opensearch-dashboards:{{ dashboards_version }}
     ports:
       - "5601:5601"
     expose:
@@ -152,7 +152,7 @@ services:
   {%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:
-    image: minio/minio
+    image: registry.cern.ch/docker.io/minio/minio
     restart: "unless-stopped"
     ports:
       - "9000:9000"
