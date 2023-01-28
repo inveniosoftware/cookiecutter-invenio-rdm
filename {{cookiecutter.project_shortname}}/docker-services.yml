@@ -28,14 +28,14 @@ services:
     image: {{cookiecutter.project_shortname}}-frontend
     restart: "unless-stopped"
     ports:
-      - "80"
-      - "443"
+      - "280"
+      - "643"
   cache:
     image: redis:7
     restart: "unless-stopped"
     read_only: true
     ports:
-      - "6379:6379"
+      - "6579:6379"
   {%- if cookiecutter.database == 'postgresql'%}
   db:
     image: postgres:12.4
@@ -45,12 +45,13 @@ services:
       - "POSTGRES_PASSWORD={{cookiecutter.project_shortname}}"
       - "POSTGRES_DB={{cookiecutter.project_shortname}}"
     ports:
-      - "5432:5432"
+      - "5632:5432"
   pgadmin:
     image: dpage/pgadmin4:6
     restart: "unless-stopped"
     ports:
-      - "5050:80"
+      - "5250:80"
+      - "5251:443"
     environment:
       PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
@@ -66,12 +67,12 @@ services:
       - "MYSQL_USER={{cookiecutter.project_shortname}}"
       - "MYSQL_PASSWORD={{cookiecutter.project_shortname}}"
     ports:
-      - "3306:3306"
+      - "3506:3306"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: "unless-stopped"
     ports:
-      - '8080:80'
+      - '8280:80'
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
@@ -80,8 +81,8 @@ services:
     image: rabbitmq:3-management
     restart: "unless-stopped"
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "15872:15672"
+      - "5872:5672"
   {%- if cookiecutter.search in ['opensearch1', 'opensearch2'] %}
     {%- if cookiecutter.search == 'opensearch1' %}
       {%- set os_version = "1.3.5" %}
@@ -109,12 +110,12 @@ services:
         hard: 65536
     mem_limit: 2g
     ports:
-      - "9200:9200"
-      - "9600:9600"
+      - "9400:9200"
+      - "9800:9600"
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:{{ dashboards_version }}
     ports:
-      - "5601:5601"
+      - "5801:5601"
     expose:
       - "5601"
     environment:
@@ -140,15 +141,15 @@ services:
         hard: -1
     mem_limit: 2g
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "9400:9200"
+      - "9500:9300"
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.2
     environment:
       - "ELASTICSEARCH_HOSTS=http://search:9200"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
-      - "5601:5601"
+      - "5801:5601"
   {%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:

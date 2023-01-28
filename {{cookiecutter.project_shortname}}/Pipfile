@@ -7,7 +7,8 @@ verify_ssl = true
 check-manifest = ">=0.25"
 
 [packages]
-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "{{ cookiecutter.search }}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=11.0.0"}
+oarepo = { version = "~=11.0.0", extras = [] }
+oarepo-ui = ">=4.0.10"
 {%- if cookiecutter.site_code == 'yes'%}
 {{cookiecutter.project_shortname}} = {editable="True", path="./site"}
 {% endif %}

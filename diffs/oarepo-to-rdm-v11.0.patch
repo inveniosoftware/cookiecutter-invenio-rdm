@@ -1,0 +1,311 @@
+diff --git a/.gitignore b/.gitignore
+index 8e0aa27..6464bce 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -104,3 +104,7 @@ venv.bak/
+ .mypy_cache/
+ 
+ *.sublime-*
++
++.DS_Store
++.idea/
++.vscode/
+diff --git a/{{cookiecutter.project_shortname}}/.envrc b/{{cookiecutter.project_shortname}}/.envrc
+new file mode 100644
+index 0000000..beaf71f
+--- /dev/null
++++ b/{{cookiecutter.project_shortname}}/.envrc
+@@ -0,0 +1 @@
++layout pipenv
+diff --git a/{{cookiecutter.project_shortname}}/.gitignore b/{{cookiecutter.project_shortname}}/.gitignore
+index 8b4106d..6ffa901 100644
+--- a/{{cookiecutter.project_shortname}}/.gitignore
++++ b/{{cookiecutter.project_shortname}}/.gitignore
+@@ -73,3 +73,7 @@ data/.minio.sys
+ 
+ # Celery
+ celerybeat-schedule
++
++.DS_Store
++.idea/
++.vscode/
+diff --git a/{{cookiecutter.project_shortname}}/Pipfile b/{{cookiecutter.project_shortname}}/Pipfile
+index de718ad..f04dab1 100644
+--- a/{{cookiecutter.project_shortname}}/Pipfile
++++ b/{{cookiecutter.project_shortname}}/Pipfile
+@@ -7,7 +7,8 @@ verify_ssl = true
+ check-manifest = ">=0.25"
+ 
+ [packages]
+-invenio-app-rdm = {extras = ["{{ cookiecutter.database }}", "{{ cookiecutter.search }}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=11.0.0"}
++oarepo = { version = "~=11.0.0", extras = [] }
++oarepo-ui = ">=4.0.10"
+ {%- if cookiecutter.site_code == 'yes'%}
+ {{cookiecutter.project_shortname}} = {editable="True", path="./site"}
+ {% endif %}
+diff --git a/{{cookiecutter.project_shortname}}/assets/less/theme.config b/{{cookiecutter.project_shortname}}/assets/less/theme.config
+index 1f7e5ce..d0b227d 100644
+--- a/{{cookiecutter.project_shortname}}/assets/less/theme.config
++++ b/{{cookiecutter.project_shortname}}/assets/less/theme.config
+@@ -18,60 +18,60 @@
+ */
+ 
+ /* Global */
+-@site        : 'rdm';
++@site        : 'default';
+ @reset       : 'default';
+ 
+ /* Elements */
+-@button      : 'rdm';
+-@container   : 'rdm';
+-@divider     : 'rdm';
+-@flag        : 'rdm';
+-@header      : 'rdm';
++@button      : 'default';
++@container   : 'default';
++@divider     : 'default';
++@flag        : 'default';
++@header      : 'default';
+ @icon        : 'default';
+-@image       : 'rdm';
+-@input       : 'rdm';
+-@label       : 'rdm';
+-@list        : 'rdm';
+-@loader      : 'rdm';
+-@placeholder : 'rdm';
+-@rail        : 'rdm';
+-@reveal      : 'rdm';
+-@segment     : 'rdm';
+-@step        : 'rdm';
++@image       : 'default';
++@input       : 'default';
++@label       : 'default';
++@list        : 'default';
++@loader      : 'default';
++@placeholder : 'default';
++@rail        : 'default';
++@reveal      : 'default';
++@segment     : 'default';
++@step        : 'default';
+ 
+ /* Collections */
+-@breadcrumb  : 'rdm';
+-@form        : 'rdm';
+-@grid        : 'rdm';
+-@menu        : 'rdm';
+-@message     : 'rdm';
+-@table       : 'rdm';
++@breadcrumb  : 'default';
++@form        : 'default';
++@grid        : 'default';
++@menu        : 'default';
++@message     : 'default';
++@table       : 'default';
+ 
+ /* Modules */
+-@accordion   : 'rdm';
+-@checkbox    : 'rdm';
+-@dimmer      : 'rdm';
+-@dropdown    : 'rdm';
+-@embed       : 'rdm';
+-@modal       : 'rdm';
+-@nag         : 'rdm';
+-@popup       : 'rdm';
+-@progress    : 'rdm';
+-@rating      : 'rdm';
+-@search      : 'rdm';
+-@shape       : 'rdm';
+-@sidebar     : 'rdm';
+-@sticky      : 'rdm';
+-@tab         : 'rdm';
++@accordion   : 'default';
++@checkbox    : 'default';
++@dimmer      : 'default';
++@dropdown    : 'default';
++@embed       : 'default';
++@modal       : 'default';
++@nag         : 'default';
++@popup       : 'default';
++@progress    : 'default';
++@rating      : 'default';
++@search      : 'default';
++@shape       : 'default';
++@sidebar     : 'default';
++@sticky      : 'default';
++@tab         : 'default';
+ @transition  : 'default';
+ 
+ /* Views */
+-@ad          : 'rdm';
+-@card        : 'rdm';
+-@comment     : 'rdm';
+-@feed        : 'rdm';
+-@item        : 'rdm';
+-@statistic   : 'rdm';
++@ad          : 'default';
++@card        : 'default';
++@comment     : 'default';
++@feed        : 'default';
++@item        : 'default';
++@statistic   : 'default';
+ 
+ /*******************************
+             Folders
+@@ -89,7 +89,7 @@
+          Import Theme
+ *******************************/
+ 
+-@import (multiple) "themes/rdm/theme.less";
++@import (multiple) "oarepo_ui/theme/theme.less";
+ 
+ @fontPath : "../../../themes/@{theme}/assets/fonts";
+ 
+diff --git a/{{cookiecutter.project_shortname}}/docker-services.yml b/{{cookiecutter.project_shortname}}/docker-services.yml
+index 75fc088..ab9dfe1 100644
+--- a/{{cookiecutter.project_shortname}}/docker-services.yml
++++ b/{{cookiecutter.project_shortname}}/docker-services.yml
+@@ -28,14 +28,14 @@ services:
+     image: {{cookiecutter.project_shortname}}-frontend
+     restart: "unless-stopped"
+     ports:
+-      - "80"
+-      - "443"
++      - "280"
++      - "643"
+   cache:
+     image: redis:7
+     restart: "unless-stopped"
+     read_only: true
+     ports:
+-      - "6379:6379"
++      - "6579:6379"
+   {%- if cookiecutter.database == 'postgresql'%}
+   db:
+     image: postgres:12.4
+@@ -45,12 +45,13 @@ services:
+       - "POSTGRES_PASSWORD={{cookiecutter.project_shortname}}"
+       - "POSTGRES_DB={{cookiecutter.project_shortname}}"
+     ports:
+-      - "5432:5432"
++      - "5632:5432"
+   pgadmin:
+     image: dpage/pgadmin4:6
+     restart: "unless-stopped"
+     ports:
+-      - "5050:80"
++      - "5250:80"
++      - "5251:443"
+     environment:
+       PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
+       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
+@@ -66,12 +67,12 @@ services:
+       - "MYSQL_USER={{cookiecutter.project_shortname}}"
+       - "MYSQL_PASSWORD={{cookiecutter.project_shortname}}"
+     ports:
+-      - "3306:3306"
++      - "3506:3306"
+   phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     restart: "unless-stopped"
+     ports:
+-      - '8080:80'
++      - '8280:80'
+     environment:
+       PMA_HOST: db
+       MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
+@@ -80,8 +81,8 @@ services:
+     image: rabbitmq:3-management
+     restart: "unless-stopped"
+     ports:
+-      - "15672:15672"
+-      - "5672:5672"
++      - "15872:15672"
++      - "5872:5672"
+   {%- if cookiecutter.search in ['opensearch1', 'opensearch2'] %}
+     {%- if cookiecutter.search == 'opensearch1' %}
+       {%- set os_version = "1.3.5" %}
+@@ -109,12 +110,12 @@ services:
+         hard: 65536
+     mem_limit: 2g
+     ports:
+-      - "9200:9200"
+-      - "9600:9600"
++      - "9400:9200"
++      - "9800:9600"
+   opensearch-dashboards:
+     image: opensearchproject/opensearch-dashboards:{{ dashboards_version }}
+     ports:
+-      - "5601:5601"
++      - "5801:5601"
+     expose:
+       - "5601"
+     environment:
+@@ -140,15 +141,15 @@ services:
+         hard: -1
+     mem_limit: 2g
+     ports:
+-      - "9200:9200"
+-      - "9300:9300"
++      - "9400:9200"
++      - "9500:9300"
+   kibana:
+     image: docker.elastic.co/kibana/kibana-oss:7.10.2
+     environment:
+       - "ELASTICSEARCH_HOSTS=http://search:9200"
+       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+     ports:
+-      - "5601:5601"
++      - "5801:5601"
+   {%- endif %}
+ {%- if cookiecutter.file_storage == 'S3'%}
+   s3:
+diff --git a/{{cookiecutter.project_shortname}}/invenio.cfg b/{{cookiecutter.project_shortname}}/invenio.cfg
+index 30d8552..1c1f2b7 100644
+--- a/{{cookiecutter.project_shortname}}/invenio.cfg
++++ b/{{cookiecutter.project_shortname}}/invenio.cfg
+@@ -40,12 +40,12 @@ APP_ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+ # ================
+ # See https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/
+ 
+-# TODO: Set
+-{%- if cookiecutter.database == 'postgresql'%}
+-SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
+-{%- elif cookiecutter.database == 'mysql'%}
+-SQLALCHEMY_DATABASE_URI="mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
+-{%- endif %}
++ # TODO: Set
++ {%- if cookiecutter.database == 'postgresql'%}
++SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost:5632/{{cookiecutter.project_shortname}}"
++ {%- elif cookiecutter.database == 'mysql'%}
++SQLALCHEMY_DATABASE_URI="mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost:3506/{{cookiecutter.project_shortname}}"
++ {%- endif %}
+ 
+ 
+ # Invenio-App
+@@ -103,6 +103,8 @@ I18N_LANGUAGES = [
+ # =============
+ # See https://invenio-theme.readthedocs.io/en/latest/configuration.html
+ 
++APP_THEME = ["semantic-ui"]
++
+ # Frontpage title
+ THEME_FRONTPAGE_TITLE = "{{ cookiecutter.project_name }}"
+ # Header logo
+@@ -212,3 +214,17 @@ OAISERVER_ID_PREFIX = "{{ cookiecutter.project_site }}"
+ # --------------
+ 
+ SEARCH_INDEX_PREFIX = "{{cookiecutter.project_shortname}}-"
++
++SEARCH_HOSTS = [
++    dict(host='localhost', port='9400'),
++]
++
++# Cache
++# --------------
++CACHE_REDIS_URL = 'redis://localhost:6579/0'
++
++
++# Local schema
++# --------------
++RECORDS_REFRESOLVER_CLS = 'invenio_records.resolver.InvenioRefResolver'
++RECORDS_REFRESOLVER_STORE = "invenio_jsonschemas.proxies.current_refresolver_store"
