@@ -16,5 +16,8 @@ uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
 
+[requires]
+# python_version = "3.9"    -- version check removed as we would like to be able to try tests for python3.10+
+
 [pipenv]
 allow_prereleases = false
