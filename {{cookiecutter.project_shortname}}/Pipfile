@@ -15,6 +15,10 @@ oarepo-ui = ">=4.0.10"
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
 uwsgi-tools = ">=1.1.1"
+{%- if cookiecutter.use_oarepo_vocabularies == 'yes' %}
+oarepo-vocabularies = ">=1.0.0"
+{% endif %}
+
 
 [requires]
 # python_version = "3.9"    -- version check removed as we would like to be able to try tests for python3.10+
