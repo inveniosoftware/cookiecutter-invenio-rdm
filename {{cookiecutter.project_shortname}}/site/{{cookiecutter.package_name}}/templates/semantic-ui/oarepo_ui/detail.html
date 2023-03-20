@@ -1,28 +1,27 @@
-{% extends config.BASE_TEMPLATE %}
+{{ '{' }}% extends config.BASE_TEMPLATE %{{ '}' }}
 
+{{ '{' }}%- block bypasslinks %{{ '}' }}{{ '{' }}%- endblock bypasslinks %{{ '}' }}
 
-{%- block bypasslinks %}{%- endblock bypasslinks %}
+{{ '{' }}%- block page_body %{{ '}' }}
 
-{%- block page_body %}
-
-{{config.THEME_TRACKINGCODE_TEMPLATE}}
+{{ '{' }}{{ '{' }}config.THEME_TRACKINGCODE_TEMPLATE{{ '}' }}{{ '}' }}
 
 <div class="ui container">
     <div class="ui relaxed grid mt-5">
       <div class="two column row top-padded">
 
-        {# Main content #}
+        {{ '{' }}# Main content #{{ '}' }}
         <article class="sixteen wide tablet eleven wide computer column main-record-content">
-            {% block record_main_content %}
-            {% endblock %}
+            {{ '{' }}% block record_main_content %{{ '}' }}
+            {{ '{' }}% endblock %{{ '}' }}
         </article>
 
-        {# Sidebar #}
-        <aside class="sixteen wide tablet five wide computer column sidebar" aria-label="{{ _('Record details') }}">
-            {% block record_sidebar %}
-            {% endblock record_sidebar %}
+        {{ '{' }}# Sidebar #{{ '}' }}
+        <aside class="sixteen wide tablet five wide computer column sidebar" aria-label="{{ '{' }}{{ '{' }} _('Record details') {{ '}' }}{{ '}' }}">
+            {{ '{' }}% block record_sidebar %{{ '}' }}
+            {{ '{' }}% endblock record_sidebar %{{ '}' }}
           </aside>
     </div>
 </div>
 
-{% endblock %}
+{{ '{' }}% endblock %{{ '}' }}
