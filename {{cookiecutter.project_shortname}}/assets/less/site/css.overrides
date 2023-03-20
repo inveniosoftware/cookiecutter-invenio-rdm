@@ -1,0 +1,13 @@
+/*
+   A last resort point for defining your own css.
+   If you want to style ui elements, the preferable location is
+   elements/<component>.variables to use invenio CSS with just some
+   variables redefined or elements/<component>.overrides to completely
+   override CSS
+
+   To see which variables can be overridden, look at for example
+   https://github.com/inveniosoftware/invenio-theme/blob/master/invenio_theme/assets/semantic-ui/less/invenio_theme/theme/elements/button.variables
+
+   To see how to write .overrides, look at
+   https://github.com/inveniosoftware/invenio-theme/blob/master/invenio_theme/assets/semantic-ui/less/invenio_theme/theme/elements/button.overrides
+*/
