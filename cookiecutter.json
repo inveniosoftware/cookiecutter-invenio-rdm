@@ -1,7 +1,7 @@
 {
   "project_name": "My Site",
   "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
-  "package_name": "{{ cookiecutter.project_name|slugify(separator='_') }}",
+  "package_name": "{{ cookiecutter.project_shortname|slugify(separator='_') }}",
   "project_site": "{{ cookiecutter.project_shortname }}.com",
   "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
   "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
@@ -13,5 +13,12 @@
   "file_storage": ["local", "S3"],
   "development_tools": ["yes", "no"],
   "site_code": ["yes", "no"],
-  "use_oarepo_vocabularies": ["yes", "no"]
+  "use_oarepo_vocabularies": ["yes", "no"],
+  "_copy_without_render": [
+    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/detail.html",
+    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/footer.html",
+    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/header.html",
+    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/javascript.html",
+    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/trackingcode.html"
+  ]
 }
