@@ -1,3 +1,5 @@
+{%- raw -%}
+
 {% extends config.BASE_TEMPLATE %}
 
 {%- block bypasslinks %}{%- endblock bypasslinks %}
@@ -5,21 +7,27 @@
 {%- block page_body %}
 
 <div class="ui container">
-    <div class="ui relaxed grid mt-5">
-      <div class="two column row top-padded">
+  <div class="ui relaxed grid mt-5">
+    <div class="two column row top-padded">
+      {# Main content #}
+      <article
+        class="sixteen wide tablet eleven wide computer column main-record-content"
+      >
+        {% block record_main_content %}
+        {% endblock %}
+      </article>
 
-        {# Main content #}
-        <article class="sixteen wide tablet eleven wide computer column main-record-content">
-            {% block record_main_content %}
-            {% endblock %}
-        </article>
-
-        {# Sidebar #}
-        <aside class="sixteen wide tablet five wide computer column sidebar" aria-label="{{ _('Record details') }}">
-            {% block record_sidebar %}
-            {% endblock record_sidebar %}
-          </aside>
+      {# Sidebar #}
+      <aside
+        class="sixteen wide tablet five wide computer column sidebar"
+        aria-label="{{ _('Record details') }}"
+      >
+        {% block record_sidebar %}
+        {% endblock record_sidebar %}
+      </aside>
     </div>
-</div>
+  </div>
 
-{% endblock %}
+  {% endblock %}
+</div>
+{%- endraw -%}
