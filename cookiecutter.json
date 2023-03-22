@@ -13,12 +13,5 @@
   "file_storage": ["local", "S3"],
   "development_tools": ["yes", "no"],
   "site_code": ["yes", "no"],
-  "use_oarepo_vocabularies": ["yes", "no"],
-  "_copy_without_render": [
-    "*/templates/semantic-ui/oarepo_ui/detail.html",
-    "*/templates/semantic-ui/oarepo_ui/footer.html",
-    "*/templates/semantic-ui/oarepo_ui/header.html",
-    "*/templates/semantic-ui/oarepo_ui/javascript.html",
-    "*/templates/semantic-ui/oarepo_ui/trackingcode.html"
-  ]
+  "use_oarepo_vocabularies": ["yes", "no"]
 }
