@@ -15,10 +15,10 @@
   "site_code": ["yes", "no"],
   "use_oarepo_vocabularies": ["yes", "no"],
   "_copy_without_render": [
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/detail.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/footer.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/header.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/javascript.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/trackingcode.html"
+    "*/templates/semantic-ui/oarepo_ui/detail.html",
+    "*/templates/semantic-ui/oarepo_ui/footer.html",
+    "*/templates/semantic-ui/oarepo_ui/header.html",
+    "*/templates/semantic-ui/oarepo_ui/javascript.html",
+    "*/templates/semantic-ui/oarepo_ui/trackingcode.html"
   ]
 }
