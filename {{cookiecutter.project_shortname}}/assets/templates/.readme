@@ -1,0 +1,3 @@
+The @templates alias is used for overwriting JSX templates.
+The alias assumes that a folder "templates" exists in the
+root of the var/instance/assets (root of webpack project).
