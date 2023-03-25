@@ -13,12 +13,5 @@
   "file_storage": ["local", "S3"],
   "development_tools": ["yes", "no"],
   "site_code": ["yes", "no"],
-  "use_oarepo_vocabularies": ["yes", "no"],
-  "_copy_without_render": [
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/detail.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/footer.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/header.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/javascript.html",
-    "{{cookiecutter.project_shortname}}/site/{{cookiecutter.package_name}}/templates/semantic-ui/oarepo_ui/trackingcode.html"
-  ]
+  "use_oarepo_vocabularies": ["yes", "no"]
 }
