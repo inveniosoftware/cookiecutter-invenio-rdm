@@ -1,0 +1,65 @@
+# development version of docker
+version: '2.2'
+name: nr-docs-devel
+services:
+  cache:
+    extends:
+      file: docker-services.yml
+      service: cache
+  db:
+    extends:
+      file: docker-services.yml
+      service: db
+  mq:
+    extends:
+      file: docker-services.yml
+      service: mq
+  search:
+    extends:
+      file: docker-services.yml
+      service: search
+  opensearch-dashboards:
+    extends:
+      file: docker-services.yml
+      service: opensearch-dashboards
+  pgadmin:
+    extends:
+      file: docker-services.yml
+      service: pgadmin
+  s3:
+    extends:
+      file: docker-services.yml
+      service: s3
+  app:
+    image: {{cookiecutter.project_shortname}}:devel
+    ports:
+      - '127.0.0.1:5000:5000'
+    # restart: 'unless-stopped'
+    environment:
+      - 'INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1'
+      - 'INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/'
+      - 'INVENIO_CACHE_REDIS_URL=redis://cache:6379/0'
+      - 'INVENIO_CACHE_TYPE=redis'
+      - 'INVENIO_CELERY_BROKER_URL=amqp://guest:guest@mq:5672/'
+      - 'INVENIO_CELERY_RESULT_BACKEND=redis://cache:6379/2'
+      - "INVENIO_SEARCH_HOSTS=['search:9200']"
+      - 'INVENIO_SECRET_KEY=CHANGE_ME'
+      {%- if cookiecutter.database == 'postgresql'%}
+      - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
+      {%- elif cookiecutter.database == 'mysql'%}
+      - "INVENIO_SQLALCHEMY_DATABASE_URI=mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
+      {%- endif %}
+      - 'INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3'
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: bind
+        source: ../../
+        target: /repository
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ../data/development

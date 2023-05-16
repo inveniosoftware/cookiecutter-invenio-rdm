@@ -1,0 +1,53 @@
+
+ARG REPOSITORY_SITE_NAME
+
+FROM oarepo/oarepo-base-development:11 AS production-build
+ARG REPOSITORY_SITE_NAME
+ENV SITE_DIR=/repository/sites/${REPOSITORY_SITE_NAME}
+
+RUN ${INVENIO_VENV}/bin/pip install -U pipenv
+
+RUN mkdir /repository
+
+COPY ./ui /repository/ui
+COPY ./models /repository/models
+COPY ./sites /repository/sites
+
+WORKDIR ${SITE_DIR}
+RUN cp invenio.cfg ${INVENIO_INSTANCE_PATH}
+
+RUN ${INVENIO_VENV}/bin/pipenv requirements > requirements-orig.txt
+RUN cat requirements-orig.txt | \
+    egrep -iv '^cffi=|^cairocffi=|^uwsgi=|^packaging=|^pip=|^setuptools=|^pyparsing=|^xcffib=|^cchardet=' \
+    > requirements.txt
+
+RUN ${INVENIO_VENV}/bin/pip install -r requirements.txt --no-deps
+RUN ${INVENIO_VENV}/bin/pip check || echo "check failed. cairocffi and pypackaging should be expected"
+
+RUN cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
+    cp -r ./assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
+    ${INVENIO_CLI} collect --verbose  && \
+    ${INVENIO_CLI} webpack buildall
+
+
+FROM oarepo/oarepo-base-production:11
+
+ARG REPOSITORY_SITE_NAME
+ENV SITE_DIR=/repository/sites/${REPOSITORY_SITE_NAME}
+
+COPY --from=production-build /repository /repository
+RUN mkdir -p /opt/invenio/var/instance/static
+
+COPY --from=production-build ${INVENIO_INSTANCE_PATH}/static ${INVENIO_INSTANCE_PATH}/static
+COPY --from=production-build ${INVENIO_INSTANCE_PATH}/invenio.cfg ${INVENIO_INSTANCE_PATH}/invenio.cfg
+
+RUN cp -rp ${SITE_DIR}/templates/ ${INVENIO_INSTANCE_PATH}/templates/
+RUN cp -rp ${SITE_DIR}/app_data/ ${INVENIO_INSTANCE_PATH}/app_data/
+RUN cp -rp ${SITE_DIR}/translations/ ${INVENIO_INSTANCE_PATH}/translations/
+
+WORKDIR ${SITE_DIR}
+COPY --from=production-build ${SITE_DIR}/requirements.txt ${SITE_DIR}/requirements.txt
+RUN pip install -r requirements.txt --no-deps
+RUN pip check || echo "check failed. cairocffi and pypackaging should be expected"
+
+ENTRYPOINT [ "sh", "-c" ]

@@ -43,8 +43,10 @@
 
 /* Your components
 @import (optional, multiple)
-  '<libraryName>/theme/@{type}s/@{element}.variables';
+  '<libraryName>/${theme}/@{type}s/@{element}.variables';
  */
+
+ @import (optional, multiple) '{{cookiecutter.package_name}}/theme/@{type}s/@{element}.variables';
 
 /* Invenio-theme Theme */
 @import (optional, multiple) 'themes/invenio/@{type}s/@{element}.variables';
@@ -81,6 +83,9 @@
   @import (optional, multiple)
     '<libraryName>/theme/@{type}s/@{element}.overrides';
  */
+
+@import (optional, multiple) 'oarepo_ui/theme/@{type}s/@{element}.overrides';
+@import (optional, multiple) '{{cookiecutter.package_name}}/theme/@{type}s/@{element}.overrides';
 
   @import (optional, multiple) 'themes/invenio/@{type}s/@{element}.overrides';
   @import (optional, multiple) 'themes/oarepo/@{type}s/@{element}.overrides';

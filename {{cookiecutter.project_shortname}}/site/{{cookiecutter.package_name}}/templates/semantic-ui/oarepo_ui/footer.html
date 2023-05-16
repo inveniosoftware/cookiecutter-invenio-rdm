@@ -1,1 +1,17 @@
-{%- raw -%}{% include "invenio_theme/footer.html" %}{%- endraw -%}
+<footer id="footer">
+    <div class="ui container">
+      <div class="ui divider"></div>
+    </div>
+    <div class="ui grid container">
+      <div class="eight wide column">
+        {% trans link="http://inveniosoftware.org" %}Powered by
+          <a href="{{ link }}">Invenio</a>{% endtrans %}
+      </div>
+      <div class="eight wide column right aligned">
+      {%- if config.I18N_LANGUAGES %}
+        {% from "invenio_i18n/macros/language_selector.html" import language_selector_dropdown %}
+        {{ language_selector_dropdown() }}
+      {%- endif %}
+      </div>
+    </div>
+  </footer>
