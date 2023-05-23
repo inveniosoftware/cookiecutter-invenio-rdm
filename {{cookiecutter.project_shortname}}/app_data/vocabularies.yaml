@@ -5,6 +5,29 @@ subjects:
       name: Fields of Science and Technology
       uri: "http://www.oecd.org/science/inno/38235147.pdf"
       data-file: vocabularies/subjects_oecd_fos.yaml
+# Minimimal example vocabularies
+# can be used for quick testing, or a basis for building your own customized vocabularies.
+{%- if cookiecutter.use_reduced_vocabs == "no" %}
+#names:
+#  pid-type: names
+#  data-file: vocabularies/names.yaml
+#licenses:
+#  pid-type: lic
+#  data-file: vocabularies/cc_licences.csv
+#languages:
+#  pid-type: lng
+#  data-file: vocabularies/languages.yaml
+{%- else %}
+names:
+  pid-type: names
+  data-file: vocabularies/names.yaml
+licenses:
+  pid-type: lic
+  data-file: vocabularies/cc_licences.csv
+languages:
+  pid-type: lng
+  data-file: vocabularies/languages.yaml
+{%- endif %}
 # TODO: Uncoment this if you want to have all affiliations with ROR identifiers.
 # affiliations:
 #   pid-type: aff
