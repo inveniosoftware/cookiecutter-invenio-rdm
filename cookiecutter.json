@@ -3,7 +3,6 @@
   "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
   "package_name": "{{ cookiecutter.project_name|slugify(separator='_') }}",
   "project_site": "{{ cookiecutter.project_shortname }}.com",
-  "github_repo": "{{ cookiecutter.project_shortname }}/{{ cookiecutter.project_shortname }}",
   "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
   "author_name": "CERN",
   "author_email": "info@{{ cookiecutter.project_site }}",
