@@ -1,7 +1,6 @@
 {
   "project_name": "My Site",
   "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
-  "package_name": "{{ cookiecutter.project_name|slugify(separator='_') }}",
   "project_site": "{{ cookiecutter.project_shortname }}.com",
   "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
   "author_name": "CERN",
