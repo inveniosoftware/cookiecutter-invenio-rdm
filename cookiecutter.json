@@ -2,7 +2,6 @@
   "project_name": "My Site",
   "project_shortname": "{{ cookiecutter.project_name | slugify() }}",
   "project_site": "{{ cookiecutter.project_shortname }}.com",
-  "description": "{{ cookiecutter.project_name }} InvenioRDM Instance",
   "author_name": "CERN",
   "author_email": "info@{{ cookiecutter.project_site }}",
   "year": "{% now 'local', '%Y' %}",
