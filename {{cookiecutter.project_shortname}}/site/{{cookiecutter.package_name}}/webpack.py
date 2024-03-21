@@ -11,6 +11,9 @@ theme = WebpackThemeBundle(
             entry={
                 # Add your webpack entrypoints
             },
+            # used to override react translations.
+            # the file points to site/{{cookiecutter.project_shortname}} during build time
+            aliases={"@overriden_translations": "../translations"},
         ),
     },
 )
