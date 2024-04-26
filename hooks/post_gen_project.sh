@@ -30,3 +30,13 @@ if [ -d "$DIR" ]; then
   rm -r site
 fi
 {% endif %}
+
+{% if cookiecutter.dockerfile == 'alma' %}
+rm Dockerfile_alpine
+mv Dockerfile_alma Dockerfile
+{% endif %}
+
+{% if cookiecutter.dockerfile == 'alpine-multistage' %}
+rm Dockerfile_alma
+mv Dockerfile_alpine Dockerfile
+{% endif %}

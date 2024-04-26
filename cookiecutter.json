@@ -31,5 +31,9 @@
   "use_reduced_vocabs": [
     "no",
     "yes"
+  ],
+  "dockerfile": [
+    "alma",
+    "alpine-multistage"
   ]
 }

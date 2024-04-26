@@ -1,0 +1,129 @@
+# Dockerfile that builds a fully functional image of your app.
+#
+
+# This image creates with a multistage build the python InvenioRDM
+# application. The final stage only contains what is necessary to run
+# the application.
+# The base linux image is alpine. It uses Python 3.12 and Node.js 20
+
+
+FROM python:3.12.2-alpine3.19 as backend-builder
+
+ENV PYTHONUNBUFFERED=1
+ENV PIPENV_VERBOSITY=-1
+ENV VIRTUAL_ENV=/opt/env
+ENV WORKING_DIR=/opt/invenio
+ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
+ENV PYTHONUSERBASE=$VIRTUAL_ENV
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
+ENV PYTHONPATH $VIRTUAL_ENV/lib/python3.12:$PATH
+
+RUN apk update
+RUN apk add --update \
+    git \
+    cairo \
+    autoconf \
+    automake \
+    bash \
+    build-base \
+    file \
+    gcc \
+    libtool \
+    libxml2-dev \
+    libxslt-dev \
+    linux-headers \
+    xmlsec-dev \
+    xmlsec --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
+
+RUN python -m venv ${VIRTUAL_ENV}
+
+RUN source ${VIRTUAL_ENV}/bin/activate
+
+RUN pip install --upgrade pip setuptools
+RUN pip install pipenv
+
+RUN mkdir -p ${INVENIO_INSTANCE_PATH}
+
+WORKDIR ${WORKING_DIR}/src
+
+COPY Pipfile Pipfile.lock ./
+
+# not more necessary after new release of xmlsec
+# https://github.com/xmlsec/python-xmlsec/issues/316
+# --only-binary is not working!!!! it builds but it fails on runtime
+RUN pip install --no-binary=xmlsec --no-binary=lxml lxml xmlsec
+
+# Install all the dependecies defined in the Pipfile.
+RUN pipenv install --deploy --system --pre
+
+# compatibility reasons. python3.12 does not have importlib-metadata anymore and
+# it is needed in some packages
+RUN pip install importlib-metadata
+
+RUN invenio collect --verbose && invenio webpack create
+
+FROM node:20-alpine3.19 as frontend-builder
+
+ENV VIRTUAL_ENV=/opt/env
+ENV WORKING_DIR=/opt/invenio
+ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
+
+RUN mkdir -p ${INVENIO_INSTANCE_PATH}
+RUN mkdir -p ${VIRTUAL_ENV}
+
+COPY --from=backend-builder ${VIRTUAL_ENV}/lib ${VIRTUAL_ENV}/lib
+COPY --from=backend-builder ${VIRTUAL_ENV}/bin ${VIRTUAL_ENV}/bin
+COPY --from=backend-builder ${INVENIO_INSTANCE_PATH} ${INVENIO_INSTANCE_PATH}
+
+COPY ./app_data/ ${INVENIO_INSTANCE_PATH}/app_data/
+COPY ./assets/ ${INVENIO_INSTANCE_PATH}/assets/
+COPY ./static/ ${INVENIO_INSTANCE_PATH}/static/
+COPY ./translations ${INVENIO_INSTANCE_PATH}/translations/
+
+# has to be in one RUN command otherwise the cd has no effect for npm
+WORKDIR ${INVENIO_INSTANCE_PATH}/assets
+RUN npm install --legacy-peer-deps
+RUN npm run build
+
+FROM python:3.12.2-alpine3.19 as frontend
+
+RUN apk update
+RUN apk add --update uwsgi-python3 libxslt-dev xmlsec cairo bash --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ENV VIRTUAL_ENV=/opt/env
+ENV WORKING_DIR=/opt/invenio
+ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
+
+RUN python -m venv ${VIRTUAL_ENV}
+
+RUN source ${VIRTUAL_ENV}/bin/activate
+
+RUN mkdir -p ${INVENIO_INSTANCE_PATH}
+RUN mkdir -p ${VIRTUAL_ENV}
+RUN mkdir -p ${WORKING_DIR}/src/saml/idp/cert
+
+COPY --from=frontend-builder ${VIRTUAL_ENV}/lib ${VIRTUAL_ENV}/lib
+COPY --from=frontend-builder ${VIRTUAL_ENV}/bin ${VIRTUAL_ENV}/bin
+COPY --from=frontend-builder ${INVENIO_INSTANCE_PATH}/app_data ${INVENIO_INSTANCE_PATH}/app_data
+COPY --from=frontend-builder ${INVENIO_INSTANCE_PATH}/static ${INVENIO_INSTANCE_PATH}/static
+COPY --from=frontend-builder ${INVENIO_INSTANCE_PATH}/translations ${INVENIO_INSTANCE_PATH}/translations
+
+WORKDIR ${WORKING_DIR}/src
+
+COPY ./saml/idp/cert/ ./saml/idp/cert/
+COPY ./migrations/ ./migrations/
+COPY ./wipe_recreate.sh .
+COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
+COPY ./prod/invenio.cfg ${INVENIO_INSTANCE_PATH}
+
+RUN adduser invenio --no-create-home --disabled-password
+
+RUN chmod 755 wipe_recreate.sh
+RUN chown invenio:invenio wipe_recreate.sh
+
+USER invenio
+
+# Instruction used to configure how the container will run.
+ENTRYPOINT [ "bash", "-c"]
