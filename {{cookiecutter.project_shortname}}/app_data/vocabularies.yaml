@@ -28,7 +28,3 @@ languages:
   pid-type: lng
   data-file: vocabularies/languages.yaml
 {%- endif %}
-# TODO: Uncomment this if you want to have all affiliations with ROR identifiers.
-# affiliations:
-#   pid-type: aff
-#   data-file: vocabularies/affiliations_ror.yaml
