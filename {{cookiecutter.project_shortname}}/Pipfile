@@ -9,7 +9,7 @@ check-manifest = ">=0.25"
 [packages]
 invenio-app-rdm = {extras = ["{{ cookiecutter.search }}"{% if cookiecutter.file_storage == 'S3' %}, "s3"{% endif %}], version = "~=12.0.0rc2"}
 {%- if cookiecutter.site_code == 'yes'%}
-{{cookiecutter.project_shortname}} = {editable="True", path="./site"}
+{{cookiecutter.project_shortname}} = {editable = true, path="./site"}
 {% endif %}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
