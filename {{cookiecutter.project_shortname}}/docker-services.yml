@@ -39,7 +39,7 @@ services:
       - "6379:6379"
   {%- if cookiecutter.database == 'postgresql'%}
   db:
-    image: postgres:12.4
+    image: postgres:14.13
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
