@@ -5,7 +5,7 @@
 #
 # Usage::
 #
-#   $ docker-compose up -d
+#   $ docker compose up -d
 #
 # Following services are included:
 # - Cache: Redis (exposed port: 6379)
@@ -14,7 +14,6 @@
 # - Elasticsearch (exposed ports: 9200, 9300)
 # - Kibana (view ES indexes) (exposed ports: 5601)
 #
-version: '2.2'
 services:
   cache:
     extends:

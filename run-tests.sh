@@ -5,6 +5,7 @@
 #
 # Copyright (C) 2019 CERN.
 # Copyright (C) 2019 Northwestern University.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -20,7 +21,7 @@ TESTDIR=$(pwd)
 
 finish() {
     echo "Cleaning up."
-    docker-compose -f ${PROJECTDIR}/docker-compose.full.yml down --volumes --remove-orphans &
+    docker compose -f ${PROJECTDIR}/docker-compose.full.yml down --volumes --remove-orphans &
     pipenv --rm || true
     rm -rf "${WORKDIR}"
     echo "Test setup cleaned."
@@ -56,15 +57,15 @@ pipenv run check-manifest -u || true
 ${TESTDIR}/scripts/build-images.sh
 # Fire up a full instance via docker-compose.full.yml
 # We will use the services (DB, OS/ES, etc) for running the tests locally
-docker-compose -f docker-compose.full.yml up -d
+docker compose -f docker-compose.full.yml up -d
 ${TESTDIR}/scripts/wait-for-services.sh --full
 echo "All services are up."
 
-docker-compose -f docker-compose.full.yml down
+docker compose -f docker-compose.full.yml down
 echo "Services successfully stopped"
 
 # Fire up the services we need for testing
-docker-compose up -d
+docker compose up -d
 ${TESTDIR}/scripts/wait-for-services.sh
 # Run the instance tests
 # REQUIREMENTS=prod ./run-tests.sh

@@ -6,6 +6,7 @@
 #
 # Copyright (C) 2019-2020 CERN.
 # Copyright (C) 2019-2020 Northwestern University.
+# Copyright (C) 2024 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -33,10 +34,10 @@ fi
 
 if [[ ${COOKIECUTTER_DATABASE} == "mysql" ]]
 then
-    _db_check(){ docker-compose exec db bash -c "mysql -p${PROJECT_NAME} -e \"select Version();\"" &>/dev/null; }
+    _db_check(){ docker compose exec db bash -c "mysql -p${PROJECT_NAME} -e \"select Version();\"" &>/dev/null; }
     check_ready "MySQL" _db_check
 else
-    _db_check(){ docker-compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
+    _db_check(){ docker compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
     check_ready "Postgres" _db_check
 fi
 
@@ -47,8 +48,8 @@ else
     check_ready "OpenSearch" _search_check
 fi
 
-_redis_check(){ docker-compose exec cache bash -c 'redis-cli ping' | grep 'PONG' &> /dev/null; }
+_redis_check(){ docker compose exec cache bash -c 'redis-cli ping' | grep 'PONG' &> /dev/null; }
 check_ready "Redis" _redis_check
 
-_rabbit_check(){ docker-compose exec mq bash -c "rabbitmqctl status" &>/dev/null; }
+_rabbit_check(){ docker compose exec mq bash -c "rabbitmqctl status" &>/dev/null; }
 check_ready "RabbitMQ" _rabbit_check
