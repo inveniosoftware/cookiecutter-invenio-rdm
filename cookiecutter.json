@@ -13,8 +13,7 @@
   ],
   "search": [
     "opensearch2",
-    "opensearch1",
-    "elasticsearch7"
+    "opensearch1"
   ],
   "file_storage": [
     "local",
