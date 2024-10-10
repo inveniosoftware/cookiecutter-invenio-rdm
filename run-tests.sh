@@ -34,7 +34,7 @@ export PROJECT_NAME
 cookiecutter --no-input -o "$WORKDIR" . \
     project_name=${PROJECT_NAME} \
     database=${COOKIECUTTER_DATABASE:-postgresql} \
-    elasticsearch=${COOKIECUTTER_ELASTICSEARCH:-elasticsearch6} \
+    opensearch=${COOKIECUTTER_OPENSEARCH:-opensearch2} \
     file_storage=${COOKIECUTTER_FILE_STORAGE:-local}
 
 PROJECTDIR=${WORKDIR}/${PROJECT_NAME}
