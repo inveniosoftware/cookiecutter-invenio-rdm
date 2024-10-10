@@ -6,7 +6,7 @@
 #
 # Copyright (C) 2019-2020 CERN.
 # Copyright (C) 2019-2020 Northwestern University.
-# Copyright (C) 2024 KTH Royal Institute of Technology.
+# Copyright (C) 2024      KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -42,11 +42,7 @@ else
 fi
 
 _search_check(){ curl --output /dev/null --silent --head --fail http://localhost:9200 &>/dev/null; }
-if [[ ${COOKIECUTTER_SEARCH} == "elasticsearch7" ]]
-    check_ready "Elasticsearch" _search_check
-else
-    check_ready "OpenSearch" _search_check
-fi
+check_ready "OpenSearch" _search_check
 
 _redis_check(){ docker compose exec cache bash -c 'redis-cli ping' | grep 'PONG' &> /dev/null; }
 check_ready "Redis" _redis_check
