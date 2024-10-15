@@ -28,6 +28,6 @@ Install the latest Cookiecutter if you haven't installed it yet::
 
 Generate your Invenio RDM instance::
 
-    cookiecutter https://github.com/inveniosoftware/cookiecutter-invenio-rdm.git -c v9.0
+    cookiecutter https://github.com/inveniosoftware/cookiecutter-invenio-rdm.git -c v12.0
 
 More detailed steps can be found at https://inveniordm.docs.cern.ch/install/scaffold/
