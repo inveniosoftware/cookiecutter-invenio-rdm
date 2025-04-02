@@ -9,10 +9,10 @@
 #
 # Following services are included:
 # - Cache: Redis (exposed port: 6379)
-# - DB: (PostgresSQL/MySQL) (exposed port: 5432 or 3306)
+# - DB: PostgreSQL (exposed port: 5432)
 # - Message queue: RabbitMQ (exposed ports: 5672, 15672)
 # - OpenSearch (exposed ports: 9200, 9600)
-# - Kibana (view ES indexes) (exposed ports: 5601)
+# - Kibana (view OS indexes) (exposed ports: 5601)
 #
 services:
   cache:
@@ -36,17 +36,10 @@ services:
     extends:
       file: docker-services.yml
       service: opensearch-dashboards
-  {%- if cookiecutter.database == 'postgresql'%}
   pgadmin:
     extends:
       file: docker-services.yml
       service: pgadmin
-  {%- elif cookiecutter.database == 'mysql'%}
-  phpmyadmin:
-    extends:
-      file: docker-services.yml
-      service: phpmyadmin
-  {%- endif %}
 {%- endif %}
 {%- if cookiecutter.file_storage == 'S3'%}
   s3:

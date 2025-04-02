@@ -6,6 +6,7 @@
 #
 # Copyright (C) 2019 CERN.
 # Copyright (C) 2019 Northwestern University.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -13,19 +14,20 @@
 set -e
 
 cd ${PROJECTDIR}
-pipfile_lock_path="./Pipfile.lock"
+uv_lock_path="./uv.lock"
 
-if [ ! -f $pipfile_lock_path ]; then
-    echo "'Pipfile.lock' not found. Generating via 'pipenv lock'..."
-    pipenv lock
+if [ ! -f $uv_lock_path ]; then
+    echo "'uv.lock' not found. Generating via 'uv lock'..."
+    uv lock
 fi
 
-# Installs all packages specified in Pipfile.lock
-pipenv sync
+# Install all dependency groups so check-manifest is available
+uv sync --all-groups
+export INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
 # Build assets
-INVENIO_LOCAL_INSTANCE_PATH=$(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")
+INVENIO_LOCAL_INSTANCE_PATH=$(uv run invenio shell --no-term-title -c "print(app.instance_path)")
 cp -r ./static/. ${INVENIO_LOCAL_INSTANCE_PATH}/static/
 cp -r ./assets/. ${INVENIO_LOCAL_INSTANCE_PATH}/assets/
 
-pipenv run invenio collect -v
-pipenv run invenio webpack buildall
+uv run invenio collect -v
+uv run invenio webpack buildall
