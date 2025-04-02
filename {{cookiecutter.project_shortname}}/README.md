@@ -28,8 +28,8 @@ Following is an overview of the generated files and folders:
 | Name | Description |
 |---|---|
 | ``Dockerfile`` | Dockerfile used to build your application image. |
-| ``Pipfile`` | Python requirements installed via [pipenv](https://pipenv.pypa.io) |
-| ``Pipfile.lock`` | Locked requirements (generated on first install). |
+| ``pyproject.toml`` | Python requirements installed via [uv](https://docs.astral.sh/uv/). |
+| ``uv.lock`` | Locked requirements (generated on first install). |
 | ``app_data`` | Application data such as vocabularies. |
 | ``assets`` | Web assets (CSS, JavaScript, LESS, JSX templates) used in the Webpack build. |
 | ``docker`` | Example configuration for NGINX and uWSGI. |
@@ -47,3 +47,8 @@ Following is an overview of the generated files and folders:
 
 To learn how to configure, customize, deploy and much more, visit
 the [InvenioRDM Documentation](https://inveniordm.docs.cern.ch/).
+
+## Development
+
+install local instance with:
+`invenio-cli init RDM --template ~/src/cookiecutter-invenio-rdm`

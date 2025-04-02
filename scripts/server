@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2019 CERN.
 # SPDX-FileCopyrightText: 2019 Northwestern University.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 set -e
@@ -11,9 +12,9 @@ export FLASK_ENV=development
 export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
 
 # Start Worker and Server
-pipenv run celery -A invenio_app.celery worker -l INFO & pid_celery=$!
+uv run celery -A invenio_app.celery worker -l INFO & pid_celery=$!
 
-pipenv run invenio run \
+uv run invenio run \
        --cert "$script_path"/../docker/nginx/test.crt \
        --key "$script_path"/../docker/nginx/test.key & pid_server=$!
 
