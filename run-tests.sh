@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2019 CERN.
 # SPDX-FileCopyrightText: 2019 Northwestern University.
-# SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
+# SPDX-FileCopyrightText: 2024-2025 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 # quit on errors:
@@ -16,7 +16,7 @@ TESTDIR=$(pwd)
 finish() {
     echo "Cleaning up."
     docker compose -f ${PROJECTDIR}/docker-compose.full.yml down --volumes --remove-orphans &
-    pipenv --rm || true
+    rm -rf "${PROJECTDIR}/.venv" || true
     rm -rf "${WORKDIR}"
     echo "Test setup cleaned."
 }
@@ -35,7 +35,7 @@ cookiecutter --no-input -o "$WORKDIR" . \
 PROJECTDIR=${WORKDIR}/${PROJECT_NAME}
 export PROJECTDIR
 
-# Check local installation (this also generates the Pipfile.lock)
+# Check local installation (this also generates the uv.lock)
 ${TESTDIR}/scripts/bootstrap
 
 cd ${PROJECTDIR}
@@ -45,7 +45,7 @@ git init
 git add -A
 
 # Update MANIFEST.in
-pipenv run check-manifest -u || true
+uv run check-manifest -u || true
 
 # Build application docker images
 ${TESTDIR}/scripts/build-images.sh
