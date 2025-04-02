@@ -6,6 +6,18 @@
   "author_name": "CERN",
   "author_email": "info@{{ cookiecutter.project_site }}",
   "year": "{% now 'local', '%Y' %}",
+  "python_package_manager": [
+    "pipenv",
+    "uv"
+  ],
+  "javascript_package_manager": [
+    "npm",
+    "pnpm"
+  ],
+  "js_bundler": [
+    "webpack",
+    "rspack"
+  ],
   "database": [
     "postgresql"
   ],
