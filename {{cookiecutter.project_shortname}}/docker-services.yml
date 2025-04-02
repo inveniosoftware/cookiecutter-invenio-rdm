@@ -16,11 +16,7 @@ services:
       - "INVENIO_COMMUNITIES_IDENTITIES_CACHE_REDIS_URL=redis://cache:6379/4"
       - "INVENIO_SEARCH_HOSTS=['search:9200']"
       - "INVENIO_SECRET_KEY=CHANGE_ME"
-      {%- if cookiecutter.database == 'postgresql'%}
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
-      {%- elif cookiecutter.database == 'mysql'%}
-      - "INVENIO_SQLALCHEMY_DATABASE_URI=mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
-      {%- endif %}
       - "INVENIO_PROXYFIX_CONFIG={'x_for': 1, 'x_proto': 1}"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
   frontend:
@@ -36,9 +32,8 @@ services:
     read_only: true
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:6379:6379"
-  {%- if cookiecutter.database == 'postgresql'%}
   db:
-    image: postgres:14.13
+    image: postgres:16.11
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
@@ -56,26 +51,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
     volumes:
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
-  {%- elif cookiecutter.database == 'mysql'%}
-  db:
-    image: mysql
-    restart: "unless-stopped"
-    environment:
-      - "MYSQL_ROOT_PASSWORD={{cookiecutter.project_shortname}}"
-      - "MYSQL_DATABAE={{cookiecutter.project_shortname}}"
-      - "MYSQL_USER={{cookiecutter.project_shortname}}"
-      - "MYSQL_PASSWORD={{cookiecutter.project_shortname}}"
-    ports:
-      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:3306:3306"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: "unless-stopped"
-    ports:
-      - '${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:8080:80'
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
-  {%- endif %}
   # note: RabbitMQ uses the hostname to build the Mnesia data directory path (cf. https://www.rabbitmq.com/docs/configure)
   #       using a randomly generated hostname "forgets" about old queued messages (e.g. celery tasks) with new builds,
   #       and hard-coding the Mnesia path with random hostnames leads to connection issues on startup for old names
@@ -87,7 +62,7 @@ services:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:15672:15672"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5672:5672"
   search:
-    image: opensearchproject/opensearch:2.17.1
+    image: opensearchproject/opensearch:2.19.4
     restart: "unless-stopped"
     environment:
       # settings only for development. DO NOT use in production!
@@ -109,7 +84,7 @@ services:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9200:9200"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9600:9600"
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:2.17.1
+    image: opensearchproject/opensearch-dashboards:2.19.4
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5601:5601"
     expose:
