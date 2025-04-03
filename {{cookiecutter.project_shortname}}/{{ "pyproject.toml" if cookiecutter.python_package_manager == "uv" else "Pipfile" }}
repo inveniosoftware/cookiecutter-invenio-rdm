@@ -1,0 +1,67 @@
+{#- Centralized configuration for app-rdm -#}
+{%- set app_rdm_version = "~=13.0.0b2.dev2" -%}
+{%- set app_rdm_base = "invenio-app-rdm" ~ app_rdm_version -%}
+{%- set app_rdm_extras = [] -%}
+{%- if cookiecutter.search -%}
+  {%- set app_rdm_extras = app_rdm_extras + [cookiecutter.search] -%}
+{%- endif -%}
+{%- if cookiecutter.file_storage == 'S3' -%}
+  {%- set app_rdm_extras = app_rdm_extras + ['s3'] -%}
+{%- endif -%}
+
+{%- if cookiecutter.python_package_manager == 'pipenv' -%}
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+check-manifest = ">=0.25"
+
+[packages]
+invenio-app-rdm = {extras = {{ app_rdm_extras | tojson }}, version = "{{ app_rdm_version }}"}
+{%- if cookiecutter.site_code == 'yes'%}
+{{cookiecutter.project_shortname}} = {editable = true, path="./site"}
+{% endif %}
+uwsgi = ">=2.0"
+uwsgitop = ">=0.11"
+uwsgi-tools = ">=1.1.1"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = false
+
+{%- endif -%}
+{%- if cookiecutter.python_package_manager == 'uv' -%}
+[project]
+name = "{{ cookiecutter.project_name | slugify() }}"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">= 3.12"
+dynamic = ["version"]
+
+dependencies = [
+  "invenio-app-rdm{% if app_rdm_extras %}[{{ app_rdm_extras | join(',') }}]{% endif %}{{ app_rdm_version }}",
+  "uwsgi>=2.0",
+  "uwsgitop>=0.11",
+  "uwsgi-tools>=1.1.1",
+  {% if cookiecutter.site_code == 'yes' -%}
+  "{{cookiecutter.project_shortname}}",
+  {%- endif %}
+]
+
+[project.optional-dependencies]
+{% if cookiecutter.site_code == 'yes' -%}
+"{{cookiecutter.project_shortname}}" = [
+     "{{cookiecutter.project_shortname}}",
+]
+[tool.uv.sources]
+my-site = { workspace = true }
+{%- endif %}
+
+[tool.setuptools]
+py-modules = []
+
+{%- endif -%}
