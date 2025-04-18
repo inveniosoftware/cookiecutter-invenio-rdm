@@ -1,3 +1,9 @@
+{%- if cookiecutter.site_code == 'yes'%}
+[project]
+name = "{{cookiecutter.package_name}}-package"
+description = "Add your description here"
+dynamic = ["version"]
+{% endif %}
 [build-system]
 requires = ["setuptools", "wheel", "babel>2.8"]
 build-backend = "setuptools.build_meta"

@@ -1,152 +1,141 @@
+{%- if cookiecutter.python_package_manager == 'uv' %}
+# Dockerfile that builds a fully functional image of your app.
+#
+# This image installs all Python dependencies for your application. It's based
+# on UV official image (https://github.com/astral-sh/uv/pkgs/container/uv)
+# This section includes essential tools and libraries such as UV Node.js, NPM or Pnpm,
+# and other standard libraries commonly required by Invenio applications.
+
+# Should we move build stages to https://github.com/inveniosoftware/docker-invenio ?
+{%- if cookiecutter.javascript_package_manager == 'pnpm' %}
+ARG JS_PACKAGE_MANAGER=pnpm@10.8.1
+{%- endif %}
+ARG NODE_IMAGE=node:22-alpine
+ARG PYTHON_BASE_IMAGE=ghcr.io/astral-sh/uv:0.6-python3.12-alpine
+
+ARG WORKING_DIR=/opt/invenio
+ARG INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
+
+# --- NODE.JS STAGE ---
+FROM ${NODE_IMAGE} AS node
+{%- if cookiecutter.javascript_package_manager == 'pnpm' %}
+ARG JS_PACKAGE_MANAGER
+ENV JS_PACKAGE_MANAGER=${JS_PACKAGE_MANAGER}
+RUN corepack enable && corepack prepare ${JS_PACKAGE_MANAGER} --activate
+{%- endif %}
+
+# --- PYTHON STAGE ---
+FROM ${PYTHON_BASE_IMAGE} AS python_base
+ARG INVENIO_INSTANCE_PATH
+ENV INVENIO_INSTANCE_PATH=${INVENIO_INSTANCE_PATH} \
+LANG=en_US.UTF-8 \
+LANGUAGE=en_US:en \
+LC_ALL=en_US.UTF-8 \
+# Compile Python files to .pyc bytecode files
+UV_COMPILE_BYTECODE=1 \
+# Copy Python files from cache mount, resolving symlink issues
+UV_LINK_MODE=copy
+ENV PATH="${INVENIO_INSTANCE_PATH}/.venv/bin:${PATH}"
+
+# --- BASE STAGE ---
+FROM python_base AS builder
+WORKDIR ${INVENIO_INSTANCE_PATH}
+RUN apk update && \
+    apk add --no-cache \
+        gcc \
+        musl-dev \
+        linux-headers \
+        cairo
+# Copy Node.js runtime libraries and binaries
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/bin /usr/local/bin
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/share /usr/local/share
+
+# Sync Python dependencies
+{%- if cookiecutter.site_code == 'yes' %}
+COPY pyproject.toml uv.lock site/ ./
+{%- else %}
+COPY pyproject.toml uv.lock ./
+{%- endif %}
+RUN uv sync --locked && \
+    uv cache clean && \
+    uv cache prune
+
+# Count on .dockerignore to exclude files
+COPY . .
+
+# --- FRONTEND BUILD ---
+{%- if cookiecutter.javascript_package_manager == 'pnpm' %}
+ENV INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
+{%- else %}
+ENV INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:NPMPackage
+{%- endif %}
+RUN uv run invenio collect --verbose && \
+{%- if cookiecutter.site_code == 'yes' %}
+    mkdir -p assets templates translations site data archive && \
+{%- else %}
+    mkdir -p assets templates translations data archive && \
+{%- endif %}
+    uv run invenio webpack buildall && \
+    rm -rf assets/node_modules && \
+{%- if cookiecutter.javascript_package_manager == 'pnpm' %}
+    pnpm cache delete && \
+    rm -rf "$(pnpm store path)" && \
+{%- else %}
+    npm cache clean --force && \
+{%- endif %}
+    cp -a docker/uwsgi/. .
+
+# --- RUNTIME STAGE ---
+FROM python_base AS runtime
+
+RUN addgroup -S invenio && \
+adduser -S -G invenio invenio && \
+apk update && \
+apk add --no-cache \
+bash cairo \
+imagemagick util-linux
+
+COPY --from=builder --chown=invenio:invenio \
+    "${INVENIO_INSTANCE_PATH}" \
+    "${INVENIO_INSTANCE_PATH}"
+
+USER invenio
+WORKDIR ${INVENIO_INSTANCE_PATH}
+
+ENTRYPOINT ["bash", "-c"]
+
+{%- else -%}
 # Dockerfile that builds a fully functional image of your app.
 #
 # This image installs all Python dependencies for your application. It's based
 # on Almalinux (https://github.com/inveniosoftware/docker-invenio)
-# This section includes essential tools and libraries such as Pip, UV / Pipenv, Node.js, NPM / Pnpm,
-# and other standard libraries commonly required by Invenio applications.
-#
-# Note: It is important to keep the commands in this file in sync with your
-# bootstrap script located in ./scripts/bootstrap.
+# and includes Pip, Pipenv, Node.js, NPM and some few standard libraries
+# Invenio usually needs.
 
 
-# ---- Builder Stage ----
-#------------------------
+FROM registry.cern.ch/inveniosoftware/almalinux:1
 
-FROM ghcr.io/astral-sh/uv:alpine AS builder
-
-# Args for configuration
-ARG INVENIO_SERVER_NAME=localhost
-# CHANGED: Default instance path to match docker compose command
-ARG INVENIO_INSTANCE_PATH=/opt/invenio/var/instance
-
-# Set environment variables
-ENV INVENIO_SERVER_NAME=${INVENIO_SERVER_NAME}
-# CHANGED: Instance path ENV to match docker compose command
-ENV INVENIO_INSTANCE_PATH=${INVENIO_INSTANCE_PATH}
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-# Venv path will be set later
-
-# Install build dependencies using standard Alpine package names
-RUN apk update && \
-    apk add --no-cache \
-        bash \
-        build-base \
-        cairo-dev \
-        git \
-        nodejs \
-        npm \
-        python3 \
-        python3-dev && \
-    npm install --global --ignore-scripts pnpm && \
-    rm -rf /var/cache/apk/*
-
-# Create the instance directory and set it as working directory
-# This will now create /opt/invenio/var/instance
-RUN mkdir -p "${INVENIO_INSTANCE_PATH}"
-WORKDIR ${INVENIO_INSTANCE_PATH}
-
-# Create and activate virtual environment using the available python3
-# Venv will be inside /opt/invenio/var/instance
-RUN python3 -m venv "${INVENIO_INSTANCE_PATH}/.venv"
-ENV PATH="${INVENIO_INSTANCE_PATH}/.venv/bin:${PATH}"
-
-# Install Python dependencies using uv
-COPY pyproject.toml uv.lock* ./
-RUN uv sync --locked --no-cache --compile-bytecode && \
-    uv clean
-
-
-# Copy essential config and code
 COPY site ./site
+COPY Pipfile Pipfile.lock ./
+RUN pipenv install --deploy --system
+
+COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 COPY ./invenio.cfg ${INVENIO_INSTANCE_PATH}
+COPY ./templates/ ${INVENIO_INSTANCE_PATH}/templates/
 COPY ./app_data/ ${INVENIO_INSTANCE_PATH}/app_data/
+COPY ./translations/ ${INVENIO_INSTANCE_PATH}/translations/
+COPY ./ .
 
-# Create temporary directories first
-RUN mkdir -p /tmp/uwsgi /tmp/translations /tmp/assets /tmp/static /tmp/templates
+RUN cp -r ./static/. ${INVENIO_INSTANCE_PATH}/static/ && \
+    cp -r ./assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
+    invenio collect --verbose  && \
+    invenio webpack buildall
 
-# Copy optional/overridable components to temporary locations
-COPY ./docker/uwsgi/ /tmp/uwsgi/
-COPY ./translations/ /tmp/translations/
-COPY ./assets/ /tmp/assets/
-COPY ./static/ /tmp/static/
-COPY ./templates/ /tmp/templates/
+ENTRYPOINT [ "bash", "-c"]
 
-# Set environment variable for pnpm usage by Invenio-Cli/Webpack
-ENV INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
+# TODO: create variants for pipenv and pnpm
+{% endif %}
 
-# Build frontend assets
-RUN set -e && \
-    echo ">>> Running invenio collect..." && \
-    invenio collect --verbose && \
-    \
-    mkdir -p ${INVENIO_INSTANCE_PATH}/assets \
-                ${INVENIO_INSTANCE_PATH}/templates \
-                ${INVENIO_INSTANCE_PATH}/translations && \
-    \
-    echo ">>> Copying local assets OVER collected assets for build..." && \
-    cp -a /tmp/assets/. ${INVENIO_INSTANCE_PATH}/assets/ && \
-    \
-    echo ">>> Running invenio webpack buildall..." && \
-    invenio webpack buildall && \
-    \
-    echo ">>> Copying local static/templates/translations OVER potentially collected/generated files..." && \
-    cp -a /tmp/static/. ${INVENIO_INSTANCE_PATH}/static/ && \
-    cp -a /tmp/templates/. ${INVENIO_INSTANCE_PATH}/templates/ && \
-    cp -a /tmp/translations/. ${INVENIO_INSTANCE_PATH}/translations/ && \
-    \
-    echo ">>> Copying local uWSGI config..." && \
-    # This now copies into /opt/invenio/var/instance/
-    cp -a /tmp/uwsgi/. ${INVENIO_INSTANCE_PATH}/ && \
-    \
-    echo ">>> Cleaning up node_modules and caches..." && \
-    rm -rf ${INVENIO_INSTANCE_PATH}/assets/node_modules && \
-    pnpm store prune && \
-    rm -rf /tmp/*
-
-
-# ---- Runtime Stage ----
-#------------------------
-
-FROM ghcr.io/astral-sh/uv:alpine AS runtime
-
-# Args & Env Vars
-# CHANGED: Default instance path to match docker-compose command
-ARG INVENIO_INSTANCE_PATH=/opt/invenio/var/instance
-
-# CHANGED: Instance path ENV to match docker-compose command
-ENV INVENIO_INSTANCE_PATH=${INVENIO_INSTANCE_PATH}
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-# Set PATH to include the virtual environment copied from the builder
-# Path will now include /opt/invenio/var/instance/.venv/bin
-ENV PATH="${INVENIO_INSTANCE_PATH}/.venv/bin:${PATH}"
-
-WORKDIR ${INVENIO_INSTANCE_PATH}
-
-# Install runtime dependencies
-RUN apk update && \
-    apk add --no-cache \
-        bash \
-        cairo \
-        font-dejavu \
-        imagemagick \
-        python3 \
-        py3-setuptools \
-        pcre2 \
-        util-linux && \
-    apk cache clean
-
-# Copy the built application from the builder stage
-# This copies /opt/invenio/var/instance from the builder
-COPY --from=builder "${INVENIO_INSTANCE_PATH}" "${INVENIO_INSTANCE_PATH}"
-
-# Ensure the application directory is writable by the group
-RUN chmod -R g+w "${INVENIO_INSTANCE_PATH}" && \
-    find ${INVENIO_INSTANCE_PATH}/.venv/bin/ -type f -exec chmod +x {} \;
-
-EXPOSE 5000
-
-ENTRYPOINT ["bash", "-c"]
