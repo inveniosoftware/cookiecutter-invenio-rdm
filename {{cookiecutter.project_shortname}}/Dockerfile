@@ -53,18 +53,13 @@ COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/include /usr/local/include
 COPY --from=node /usr/local/share /usr/local/share
 
-# Sync Python dependencies
-{%- if cookiecutter.site_code == 'yes' %}
-COPY pyproject.toml uv.lock site/ ./
-{%- else %}
-COPY pyproject.toml uv.lock ./
-{%- endif %}
-RUN uv sync --locked && \
-    uv cache clean && \
-    uv cache prune
-
 # Count on .dockerignore to exclude files
 COPY . .
+
+# Sync Python dependencies
+RUN uv sync --locked && \
+    uv cache clean
+
 
 # --- FRONTEND BUILD ---
 {%- if cookiecutter.javascript_package_manager == 'pnpm' %}
