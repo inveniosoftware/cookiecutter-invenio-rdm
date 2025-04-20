@@ -47,3 +47,8 @@ Following is an overview of the generated files and folders:
 
 To learn how to configure, customize, deploy and much more, visit
 the [InvenioRDM Documentation](https://inveniordm.docs.cern.ch/).
+
+## Development
+
+install local instance with:
+`invenio-cli init RDM --template ~/src/cookiecutter-invenio-rdm`
