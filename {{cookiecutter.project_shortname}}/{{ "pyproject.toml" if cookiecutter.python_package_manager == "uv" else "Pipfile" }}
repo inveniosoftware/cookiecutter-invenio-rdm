@@ -2,6 +2,7 @@
 {%- set app_rdm_version = "~=13.0.0b2.dev2" -%}
 {%- set app_rdm_base = "invenio-app-rdm" ~ app_rdm_version -%}
 {%- set app_rdm_extras = [] -%}
+{%- set project_shortname = cookiecutter.project_shortname -%}
 {%- if cookiecutter.search -%}
   {%- set app_rdm_extras = app_rdm_extras + [cookiecutter.search] -%}
 {%- endif -%}
@@ -21,7 +22,7 @@ check-manifest = ">=0.25"
 [packages]
 invenio-app-rdm = {extras = {{ app_rdm_extras | tojson }}, version = "{{ app_rdm_version }}"}
 {%- if cookiecutter.site_code == 'yes'%}
-{{cookiecutter.project_shortname}} = {editable = true, path="./site"}
+{{ project_shortname }} = {editable = true, path="./site"}
 {% endif %}
 uwsgi = ">=2.0"
 uwsgitop = ">=0.11"
@@ -40,7 +41,7 @@ name = "{{ cookiecutter.project_name | slugify() }}"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">= 3.12"
-dynamic = ["version"]
+version = "0.1.0"
 
 dependencies = [
   "invenio-app-rdm{% if app_rdm_extras %}[{{ app_rdm_extras | join(',') }}]{% endif %}{{ app_rdm_version }}",
@@ -48,18 +49,23 @@ dependencies = [
   "uwsgitop>=0.11",
   "uwsgi-tools>=1.1.1",
   {% if cookiecutter.site_code == 'yes' -%}
-  "{{cookiecutter.project_shortname}}",
+  "{{ project_shortname }}",
   {%- endif %}
 ]
 
-[project.optional-dependencies]
 {% if cookiecutter.site_code == 'yes' -%}
-"{{cookiecutter.project_shortname}}" = [
-     "{{cookiecutter.project_shortname}}",
-]
 [tool.uv.sources]
-my-site = { workspace = true }
+"{{ project_shortname }}" = { workspace = true }
+[tool.uv.workspace]
+members = ["site"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["site"]
 {%- endif %}
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.setuptools]
 py-modules = []
