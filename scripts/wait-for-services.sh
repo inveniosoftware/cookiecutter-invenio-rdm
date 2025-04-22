@@ -32,14 +32,8 @@ then
     check_ready "S3" _s3_check
 fi
 
-if [[ ${COOKIECUTTER_DATABASE} == "mysql" ]]
-then
-    _db_check(){ docker compose exec db bash -c "mysql -p${PROJECT_NAME} -e \"select Version();\"" &>/dev/null; }
-    check_ready "MySQL" _db_check
-else
-    _db_check(){ docker compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
-    check_ready "Postgres" _db_check
-fi
+_db_check(){ docker-compose exec --user postgres db bash -c "pg_isready" &>/dev/null; }
+check_ready "Postgres" _db_check
 
 _search_check(){ curl --output /dev/null --silent --head --fail http://localhost:9200 &>/dev/null; }
 check_ready "OpenSearch" _search_check
