@@ -16,11 +16,7 @@ services:
       - "INVENIO_COMMUNITIES_IDENTITIES_CACHE_REDIS_URL=redis://cache:6379/4"
       - "INVENIO_SEARCH_HOSTS=['search:9200']"
       - "INVENIO_SECRET_KEY=CHANGE_ME"
-      {%- if cookiecutter.database == 'postgresql'%}
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
-      {%- elif cookiecutter.database == 'mysql'%}
-      - "INVENIO_SQLALCHEMY_DATABASE_URI=mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
-      {%- endif %}
       - "INVENIO_WSGI_PROXIES=2"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
   frontend:
@@ -36,7 +32,6 @@ services:
     read_only: true
     ports:
       - "6379:6379"
-  {%- if cookiecutter.database == 'postgresql'%}
   db:
     image: postgres:14.13
     restart: "unless-stopped"
@@ -56,26 +51,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
     volumes:
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
-  {%- elif cookiecutter.database == 'mysql'%}
-  db:
-    image: mysql
-    restart: "unless-stopped"
-    environment:
-      - "MYSQL_ROOT_PASSWORD={{cookiecutter.project_shortname}}"
-      - "MYSQL_DATABAE={{cookiecutter.project_shortname}}"
-      - "MYSQL_USER={{cookiecutter.project_shortname}}"
-      - "MYSQL_PASSWORD={{cookiecutter.project_shortname}}"
-    ports:
-      - "3306:3306"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: "unless-stopped"
-    ports:
-      - '8080:80'
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
-  {%- endif %}
   mq:
     image: rabbitmq:3-management
     restart: "unless-stopped"
