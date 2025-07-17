@@ -123,6 +123,19 @@ services:
       mq:
         condition: service_started
 
+  # Jobs scheduler
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
+    command: ["celery -A invenio_app.celery beat --scheduler invenio_jobs.services.scheduler:RunScheduler --loglevel=INFO"]
+    image: {{cookiecutter.project_shortname}}:latest
+    depends_on:
+      mq:
+        condition: service_started
+      db:
+        condition: service_started
+
 {%- if cookiecutter.file_storage == 'S3'%}
 volumes:
   static_data:
