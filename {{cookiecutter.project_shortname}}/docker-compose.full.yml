@@ -124,7 +124,7 @@ services:
         condition: service_started
 
   # Jobs scheduler
-  worker:
+  scheduler:
     extends:
       file: docker-services.yml
       service: app
