@@ -76,9 +76,13 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: {{cookiecutter.project_shortname}}
   {%- endif %}
+  # note: RabbitMQ uses the hostname to build the Mnesia data directory path (cf. https://www.rabbitmq.com/docs/configure)
+  #       using a randomly generated hostname "forgets" about old queued messages (e.g. celery tasks) with new builds,
+  #       and hard-coding the Mnesia path with random hostnames leads to connection issues on startup for old names
   mq:
     image: rabbitmq:3-management
     restart: "unless-stopped"
+    hostname: mq
     ports:
       - "15672:15672"
       - "5672:5672"
