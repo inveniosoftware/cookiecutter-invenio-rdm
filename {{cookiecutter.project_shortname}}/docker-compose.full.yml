@@ -69,8 +69,8 @@ services:
       - web-ui
       - web-api
     ports:
-      - "80:80"
-      - "443:443"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:80:80"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:443:443"
   # UI Application
   web-ui:
     extends:
@@ -79,7 +79,7 @@ services:
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_ui.ini"]
     image: {{cookiecutter.project_shortname}}:latest
     ports:
-      - "5000"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000"
     volumes:
       - static_data:/opt/invenio/var/instance/static
       {%- if cookiecutter.file_storage == 'local'%}
@@ -95,7 +95,7 @@ services:
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_rest.ini"]
     image: {{cookiecutter.project_shortname}}:latest
     ports:
-      - "5000"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000"
     {%- if cookiecutter.file_storage == 'local'%}
     volumes:
       - uploaded_data:/opt/invenio/var/instance/data
