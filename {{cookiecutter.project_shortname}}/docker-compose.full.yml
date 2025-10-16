@@ -79,7 +79,7 @@ services:
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_ui.ini"]
     image: {{cookiecutter.project_shortname}}:latest
     ports:
-      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000:5000"
     volumes:
       - static_data:/opt/invenio/var/instance/static
       {%- if cookiecutter.file_storage == 'local'%}
@@ -95,7 +95,7 @@ services:
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_rest.ini"]
     image: {{cookiecutter.project_shortname}}:latest
     ports:
-      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000"
+      - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5001:5000"
     {%- if cookiecutter.file_storage == 'local'%}
     volumes:
       - uploaded_data:/opt/invenio/var/instance/data
