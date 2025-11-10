@@ -92,6 +92,9 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5555:5555"
     command: celery --broker=amqp://guest:guest@mq:5672/ flower
+    depends_on:
+      mq:
+        condition: service_started
   search:
     image: opensearchproject/opensearch:2.17.1
     restart: "unless-stopped"
