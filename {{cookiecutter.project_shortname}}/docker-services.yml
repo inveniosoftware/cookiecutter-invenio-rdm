@@ -21,7 +21,7 @@ services:
       {%- elif cookiecutter.database == 'mysql'%}
       - "INVENIO_SQLALCHEMY_DATABASE_URI=mysql+pymysql://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
       {%- endif %}
-      - "INVENIO_WSGI_PROXIES=2"
+      - "INVENIO_PROXYFIX_CONFIG={'x_for': 1, 'x_proto': 1}"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
   frontend:
     build: ./docker/nginx/
