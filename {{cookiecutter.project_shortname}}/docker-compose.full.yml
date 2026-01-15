@@ -31,6 +31,13 @@ services:
     extends:
       file: docker-services.yml
       service: mq
+  flower:
+    extends:
+      file: docker-services.yml
+      service: flower
+    depends_on:
+      mq:
+        condition: service_started
   search:
     extends:
       file: docker-services.yml
