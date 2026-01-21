@@ -38,7 +38,7 @@ services:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:6379:6379"
   {%- if cookiecutter.database == 'postgresql'%}
   db:
-    image: postgres:14.13
+    image: postgres:16.8
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
