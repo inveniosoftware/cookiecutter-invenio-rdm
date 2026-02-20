@@ -7,6 +7,7 @@
 # Copyright (C) 2019 CERN.
 # Copyright (C) 2019 Northwestern University.
 # Copyright (C) 2021 Esteban J. G. Gabancho.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -16,19 +17,19 @@ set -e
 cd ${PROJECTDIR}
 
 # Clean redis
-pipenv run invenio shell --no-term-title -c "import redis; redis.StrictRedis.from_url(app.config['CACHE_REDIS_URL']).flushall(); print('Cache cleared')"
-pipenv run invenio db destroy --yes-i-know
-pipenv run invenio db init create
-pipenv run invenio index destroy --force --yes-i-know
-pipenv run invenio index init --force
-pipenv run invenio index queue init purge
+uv run invenio shell --no-term-title -c "import redis; redis.StrictRedis.from_url(app.config['CACHE_REDIS_URL']).flushall(); print('Cache cleared')"
+uv run invenio db destroy --yes-i-know
+uv run invenio db init create
+uv run invenio index destroy --force --yes-i-know
+uv run invenio index init --force
+uv run invenio index queue init purge
 if [ $COOKIECUTTER_FILE_STORAGE -eq "S3" ]
 then
-pipenv run invenio files location s3-default s3://default --default
+uv run invenio files location s3-default s3://default --default
 else
-pipenv run invenio files location --default 'default-location'  $(pipenv run invenio shell --no-term-title -c "print(app.instance_path)")
+uv run invenio files location --default 'default-location'  $(uv run invenio shell --no-term-title -c "print(app.instance_path)")
 fi
 
 # Create admin role to rectict access
-pipenv run invenio roles create admin
-pipenv run invenio access allow superuser-access role admin
+uv run invenio roles create admin
+uv run invenio access allow superuser-access role admin

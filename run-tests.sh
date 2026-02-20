@@ -5,7 +5,7 @@
 #
 # Copyright (C) 2019 CERN.
 # Copyright (C) 2019 Northwestern University.
-# Copyright (C) 2024 KTH Royal Institute of Technology.
+# Copyright (C) 2024-2025 KTH Royal Institute of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -22,7 +22,7 @@ TESTDIR=$(pwd)
 finish() {
     echo "Cleaning up."
     docker compose -f ${PROJECTDIR}/docker-compose.full.yml down --volumes --remove-orphans &
-    pipenv --rm || true
+    rm -rf "${PROJECTDIR}/.venv" || true
     rm -rf "${WORKDIR}"
     echo "Test setup cleaned."
 }
@@ -41,7 +41,7 @@ cookiecutter --no-input -o "$WORKDIR" . \
 PROJECTDIR=${WORKDIR}/${PROJECT_NAME}
 export PROJECTDIR
 
-# Check local installation (this also generates the Pipfile.lock)
+# Check local installation (this also generates the uv.lock)
 ${TESTDIR}/scripts/bootstrap
 
 cd ${PROJECTDIR}
@@ -51,7 +51,7 @@ git init
 git add -A
 
 # Update MANIFEST.in
-pipenv run check-manifest -u || true
+uv run check-manifest -u || true
 
 # Build application docker images
 ${TESTDIR}/scripts/build-images.sh
