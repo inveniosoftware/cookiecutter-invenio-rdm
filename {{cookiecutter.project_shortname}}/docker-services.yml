@@ -83,6 +83,10 @@ services:
     image: rabbitmq:3-management
     restart: "unless-stopped"
     hostname: mq
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:15672:15672"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5672:5672"
