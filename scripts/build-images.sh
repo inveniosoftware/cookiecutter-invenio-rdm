@@ -14,3 +14,6 @@ cd ${PROJECTDIR}
 
 # Build application image
 docker build . --tag ${PROJECT_NAME} --build-arg include_assets=true
+
+# Build frontend image used by docker-compose.full.yml
+docker build ./docker/nginx --tag ${PROJECT_NAME}-frontend

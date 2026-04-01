@@ -34,6 +34,7 @@ export PROJECT_NAME
 
 cookiecutter --no-input -o "$WORKDIR" . \
     project_name=${PROJECT_NAME} \
+    base_image=${COOKIECUTTER_BASE_IMAGE:-debian} \
     database=${COOKIECUTTER_DATABASE:-postgresql} \
     opensearch=${COOKIECUTTER_OPENSEARCH:-opensearch2} \
     file_storage=${COOKIECUTTER_FILE_STORAGE:-local}
