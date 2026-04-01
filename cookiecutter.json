@@ -18,6 +18,10 @@
     "yes",
     "no"
   ],
+  "base_image": [
+    "debian",
+    "alpine"
+  ],
   "use_reduced_vocabs": [
     "yes",
     "no"
