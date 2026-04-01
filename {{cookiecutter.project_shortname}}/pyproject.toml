@@ -1,5 +1,5 @@
 {%- set project_shortname = cookiecutter.project_shortname -%}
-{%- set app_rdm_version = "~=14.0.0b3.dev3" -%}
+{%- set app_rdm_version = "~=14.0.0b9.dev0" -%}
 {%- set app_rdm_base = "invenio-app-rdm" ~ app_rdm_version -%}
 {%- set app_rdm_extras = ['opensearch2'] -%}
 {%- if cookiecutter.file_storage == 'S3' -%}
