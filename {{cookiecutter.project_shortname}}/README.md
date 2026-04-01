@@ -27,7 +27,7 @@ Following is an overview of the generated files and folders:
 
 | Name | Description |
 |---|---|
-| ``Dockerfile`` | Dockerfile used to build your application image. |
+| ``Dockerfile`` | Dockerfile used to build your application image on {{ cookiecutter.base_image }}. |
 | ``pyproject.toml`` | Python requirements installed via [uv](https://docs.astral.sh/uv/). |
 | ``uv.lock`` | Locked requirements (generated on first install). |
 | ``app_data`` | Application data such as vocabularies. |
