@@ -19,8 +19,7 @@
     "no"
   ],
   "base_image": [
-    "debian",
-    "alpine"
+    "debian"
   ],
   "use_reduced_vocabs": [
     "yes",
