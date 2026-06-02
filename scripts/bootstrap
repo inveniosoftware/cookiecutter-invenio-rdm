@@ -14,8 +14,8 @@ if [ ! -f $uv_lock_path ]; then
     uv lock
 fi
 
-# Install all dependency groups so check-manifest is available
-uv sync --all-groups
+# Install the project with its test extra declared in pyproject.toml.
+uv sync --extra tests
 export INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
 # Build assets
 INVENIO_LOCAL_INSTANCE_PATH=$(uv run invenio shell --no-term-title -c "print(app.instance_path)")
