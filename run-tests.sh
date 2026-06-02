@@ -46,7 +46,7 @@ git init
 git add -A
 
 # Update MANIFEST.in
-uv run check-manifest -u || true
+uv run --with check-manifest check-manifest -u || true
 
 # Build application docker images
 ${TESTDIR}/scripts/build-images.sh

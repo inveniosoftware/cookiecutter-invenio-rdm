@@ -1,9 +1,9 @@
 {%- set package_name = cookiecutter.package_name + '_package' -%}
 [project]
 name = "{{package_name}}"
-version = "1.0.0"
+version = "0.1.0"
 description = "Add your description here"
-requires-python = ">= 3.12"
+requires-python = ">= 3.14"
 
 [project.entry-points."invenio_base.blueprints"]
 {{cookiecutter.package_name}}_views = "{{cookiecutter.package_name}}.views:create_blueprint"
