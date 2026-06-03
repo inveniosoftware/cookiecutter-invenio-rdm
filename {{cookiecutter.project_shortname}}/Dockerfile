@@ -18,6 +18,7 @@ ARG BUILD_PLATFORM=linux/amd64
 ARG PYTHON_VERSION=3.14
 ARG OS_VERSION=trixie
 ARG NODE_VERSION=24
+ARG PNPM_VERSION=latest-10
 
 FROM --platform=${BUILD_PLATFORM} python:${PYTHON_VERSION}-${OS_VERSION} AS base
 
@@ -26,6 +27,7 @@ LABEL org.opencontainers.image.source=https://github.com/inveniosoftware/docker-
 ENV \
     WORKING_DIR=/opt/invenio \
     INVENIO_INSTANCE_PATH=/opt/invenio/var/instance \
+    INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage \
     INVENIO_USER_ID=1000 \
     PATH=/opt/invenio/src/.venv/bin:${PATH}
 
@@ -62,7 +64,7 @@ RUN \
         npm \
     && \
     # Install pnpm
-    npm install -g pnpm@latest-10
+    npm install -g pnpm@${PNPM_VERSION}
 
 # Setup uv
 # From https://docs.astral.sh/uv/guides/integration/docker/
