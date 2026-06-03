@@ -1,6 +1,6 @@
-{%- set package_name = cookiecutter.package_name + '_package' -%}
+{%- set dist_name = cookiecutter.project_shortname -%}
 [project]
-name = "{{package_name}}"
+name = "{{dist_name}}"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">= 3.14"

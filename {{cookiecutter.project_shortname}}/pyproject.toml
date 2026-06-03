@@ -5,12 +5,13 @@
 {%- if cookiecutter.file_storage == 'S3' -%}
   {%- set app_rdm_extras = app_rdm_extras + ['s3'] -%}
 {%- endif -%}
+{%- set instance_dist_name = (cookiecutter.project_name | slugify()) + '-instance' -%}
 {%- if cookiecutter.site_code == 'yes' -%}
-  {%- set site_dist_name = cookiecutter.package_name + '_package' -%}
+  {%- set site_dist_name = cookiecutter.project_shortname -%}
 {%- endif -%}
 
 [project]
-name = "{{ cookiecutter.project_name | slugify() }}"
+name = "{{ instance_dist_name }}"
 description = "Add your description here"
 readme = "README.md"
 version = "{{ app_rdm_version | replace('~=', '') }}"
@@ -22,7 +23,6 @@ dependencies = [
   "uwsgitop>=0.11",
   "uwsgi-tools>=1.1.1",
   "lxml-html-clean>=0.1.1",
-  "python-dotenv>=0.21.0",
   {% if cookiecutter.site_code == 'yes' -%}
   "{{ site_dist_name }}",
   {%- endif %}
