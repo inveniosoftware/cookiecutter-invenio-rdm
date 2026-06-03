@@ -138,10 +138,16 @@ services:
 
 {%- if cookiecutter.file_storage == 'S3'%}
 volumes:
+  db_data:
+  mq_data:
+  search_data:
   static_data:
-  data:
+  s3_data:
 {%- else %}
 volumes:
+  db_data:
+  mq_data:
+  search_data:
   static_data:
   uploaded_data:
   archived_data:

@@ -43,6 +43,8 @@ services:
       - "POSTGRES_DB={{cookiecutter.project_shortname}}"
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4:6
     restart: "unless-stopped"
@@ -67,6 +69,8 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:15672:15672"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5672:5672"
+    volumes:
+      - mq_data:/var/lib/rabbitmq
   flower:
     image: mher/flower:2.0.1
     restart: "unless-stopped"
@@ -100,6 +104,8 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9200:9200"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9600:9600"
+    volumes:
+      - search_data:/usr/share/opensearch/data
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:2.19.4
     ports:
@@ -121,11 +127,19 @@ services:
       MINIO_ROOT_USER: CHANGE_ME
       MINIO_ROOT_PASSWORD: CHANGE_ME
     volumes:
-      - ./data:/data
+      - s3_data:/data
     command: server /data --console-address :9001
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
+{%- endif %}
+
+volumes:
+  db_data:
+  mq_data:
+  search_data:
+{%- if cookiecutter.file_storage == 'S3'%}
+  s3_data:
 {%- endif %}
