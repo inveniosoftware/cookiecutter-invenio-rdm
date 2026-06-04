@@ -9,7 +9,7 @@ set -e
 cd ${PROJECTDIR}
 uv_lock_path="./uv.lock"
 
-if [ ! -f $uv_lock_path ]; then
+if [ ! -f "${uv_lock_path}" ]; then
     echo "'uv.lock' not found. Generating via 'uv lock'..."
     uv lock
 fi
@@ -19,8 +19,8 @@ uv sync --extra tests
 export INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
 # Build assets
 INVENIO_LOCAL_INSTANCE_PATH=$(uv run invenio shell --no-term-title -c "print(app.instance_path)")
-cp -r ./static/. ${INVENIO_LOCAL_INSTANCE_PATH}/static/
-cp -r ./assets/. ${INVENIO_LOCAL_INSTANCE_PATH}/assets/
+cp -r ./static/. "${INVENIO_LOCAL_INSTANCE_PATH}/static/"
+cp -r ./assets/. "${INVENIO_LOCAL_INSTANCE_PATH}/assets/"
 
 uv run invenio collect -v
 uv run invenio webpack buildall

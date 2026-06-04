@@ -11,6 +11,10 @@ requires-python = ">= 3.14"
 [project.entry-points."invenio_assets.webpack"]
 {{cookiecutter.package_name}}_theme = "{{cookiecutter.package_name}}.webpack:theme"
 
+[project.optional-dependencies]
+tests = [
+  "pytest-invenio>=2.1.0,<3.0.0",
+]
 
 [build-system]
 requires = ["hatchling"]

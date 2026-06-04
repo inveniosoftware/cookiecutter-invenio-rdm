@@ -4,6 +4,7 @@ services:
       context: ./
       args:
         - ENVIRONMENT=DEV
+        - WEBPACKEXT_NPM_PKG_CLS=${WEBPACKEXT_NPM_PKG_CLS:-pynpm:PNPMPackage}
     image: {{cookiecutter.project_shortname}}
     restart: "unless-stopped"
     environment:
@@ -33,7 +34,7 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:6379:6379"
   db:
-    image: postgres:16.11
+    image: postgres:17.10
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER={{cookiecutter.project_shortname}}"
