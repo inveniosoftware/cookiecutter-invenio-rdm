@@ -6,7 +6,7 @@
 
 set -e
 
-cd ${PROJECTDIR}
+cd "${PROJECTDIR}"
 
 export FLASK_ENV=development
 export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@localhost/{{cookiecutter.project_shortname}}"
@@ -15,9 +15,9 @@ export INVENIO_SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://{{cookiecutter.pro
 uv run celery -A invenio_app.celery worker -l INFO & pid_celery=$!
 
 uv run invenio run \
-       --cert "$script_path"/../docker/nginx/test.crt \
-       --key "$script_path"/../docker/nginx/test.key & pid_server=$!
+       --cert "${script_path}/../docker/nginx/test.crt" \
+       --key "${script_path}/../docker/nginx/test.key" & pid_server=$!
 
-trap 'kill $pid_celery $pid_server &>/dev/null' EXIT
+trap 'kill "${pid_celery}" "${pid_server}" &>/dev/null' EXIT
 
-wait $pid_celery $pid_server
+wait "${pid_celery}" "${pid_server}"
