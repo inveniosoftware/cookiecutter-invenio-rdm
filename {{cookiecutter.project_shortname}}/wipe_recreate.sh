@@ -15,7 +15,7 @@ set -o nounset
 # Prompt to confirm action
 printf "Are you sure you want to wipe everything and create a new empty instance? [y/N] "
 read -r response
-case "$response" in
+case "${response}" in
     [yY]|[yY][eE][sS])
         ;;
     *)
@@ -37,7 +37,7 @@ invenio index queue init purge
 # NOTE: db init is not needed since DB keeps being created
 #       Just need to create all tables from it.
 invenio db create
-invenio files location create --default 'default-location' $(invenio shell --no-term-title -c "print(app.instance_path)")'/data'
+invenio files location create --default 'default-location' "$(invenio shell --no-term-title -c "print(app.instance_path)")/data"
 #
 # Create roles
 #

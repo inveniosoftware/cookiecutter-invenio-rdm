@@ -7,7 +7,7 @@
 
 set -e
 
-cd ${PROJECTDIR}
+cd "${PROJECTDIR}"
 
 # Clean redis
 uv run invenio shell --no-term-title -c "import redis; redis.StrictRedis.from_url(app.config['CACHE_REDIS_URL']).flushall(); print('Cache cleared')"
@@ -16,11 +16,11 @@ uv run invenio db init create
 uv run invenio index destroy --force --yes-i-know
 uv run invenio index init --force
 uv run invenio index queue init purge
-if [ $COOKIECUTTER_FILE_STORAGE -eq "S3" ]
+if [ "${COOKIECUTTER_FILE_STORAGE}" = "S3" ]
 then
 uv run invenio files location s3-default s3://default --default
 else
-uv run invenio files location --default 'default-location'  $(uv run invenio shell --no-term-title -c "print(app.instance_path)")
+uv run invenio files location --default 'default-location' "$(uv run invenio shell --no-term-title -c "print(app.instance_path)")"
 fi
 
 # Create admin role to rectict access

@@ -6,7 +6,7 @@
 
 set -e
 
-cd ${PROJECTDIR}
+cd "${PROJECTDIR}"
 uv_lock_path="./uv.lock"
 
 if [ ! -f "${uv_lock_path}" ]; then
@@ -18,7 +18,7 @@ fi
 uv sync --extra tests
 export INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
 # Build assets
-INVENIO_LOCAL_INSTANCE_PATH=$(uv run invenio shell --no-term-title -c "print(app.instance_path)")
+INVENIO_LOCAL_INSTANCE_PATH="$(uv run invenio shell --no-term-title -c "print(app.instance_path)")"
 cp -r ./static/. "${INVENIO_LOCAL_INSTANCE_PATH}/static/"
 cp -r ./assets/. "${INVENIO_LOCAL_INSTANCE_PATH}/assets/"
 

@@ -19,7 +19,7 @@ touch data/default/.gitkeep
 
 {%- if cookiecutter.site_code == 'no'%}
 DIR="site"
-if [ -d "$DIR" ]; then
+if [ -d "${DIR}" ]; then
   rm -r site
 fi
 {% endif %}
