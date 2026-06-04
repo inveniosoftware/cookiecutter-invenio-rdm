@@ -68,7 +68,6 @@ RUN \
         fonts-dejavu \
         locales \
         nodejs \
-        npm \
     && \
     # Install pnpm
     npm install -g pnpm@${PNPM_VERSION}
