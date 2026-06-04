@@ -19,15 +19,18 @@ ARG PYTHON_VERSION=3.14
 ARG OS_VERSION=trixie
 ARG NODE_VERSION=24
 ARG PNPM_VERSION=latest-10
+ARG INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage
 
 FROM --platform=${BUILD_PLATFORM} python:${PYTHON_VERSION}-${OS_VERSION} AS base
 
 LABEL org.opencontainers.image.source=https://github.com/inveniosoftware/docker-invenio
 
+ARG PNPM_VERSION
+ARG INVENIO_WEBPACKEXT_NPM_PKG_CLS
+
 ENV \
     WORKING_DIR=/opt/invenio \
     INVENIO_INSTANCE_PATH=/opt/invenio/var/instance \
-    INVENIO_WEBPACKEXT_NPM_PKG_CLS=pynpm:PNPMPackage \
     INVENIO_USER_ID=1000 \
     PATH=/opt/invenio/src/.venv/bin:${PATH}
 
@@ -84,9 +87,7 @@ ENV \
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FROM base AS build-base
-
-FROM build-base AS builder
+FROM base AS builder
 
 COPY README.md pyproject.toml uv.lock ./
 COPY site ./site
