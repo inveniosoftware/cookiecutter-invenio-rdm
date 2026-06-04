@@ -25,6 +25,10 @@ FROM --platform=${BUILD_PLATFORM} python:${PYTHON_VERSION}-${OS_VERSION} AS base
 
 LABEL org.opencontainers.image.source=https://github.com/inveniosoftware/docker-invenio
 
+# ARGs declared before FROM are only global defaults. Redeclare build args in
+# the stage where they are used so passed values are in scope:
+# https://docs.docker.com/build/building/variables/#scoping
+ARG NODE_VERSION
 ARG PNPM_VERSION
 ARG INVENIO_WEBPACKEXT_NPM_PKG_CLS
 
