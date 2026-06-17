@@ -77,6 +77,9 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_ui.ini"]
+    depends_on:
+      search:
+        condition: service_healthy
     image: {{cookiecutter.project_shortname}}:latest
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5000:5000"
@@ -93,6 +96,9 @@ services:
       file: docker-services.yml
       service: app
     command: ["uwsgi /opt/invenio/var/instance/uwsgi_rest.ini"]
+    depends_on:
+      search:
+        condition: service_healthy
     image: {{cookiecutter.project_shortname}}:latest
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5001:5000"
@@ -115,7 +121,7 @@ services:
     {%- endif %}
     depends_on:
       search:
-        condition: service_started
+        condition: service_healthy
       cache:
         condition: service_started
       db:
