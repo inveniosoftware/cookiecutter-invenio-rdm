@@ -8,6 +8,8 @@ services:
     image: {{cookiecutter.project_shortname}}
     restart: "unless-stopped"
     environment:
+      - "INVENIO_SITE_UI_URL=https://127.0.0.1"
+      - "INVENIO_SITE_API_URL=https://127.0.0.1/api"
       - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"
       - "INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/"
       - "INVENIO_CACHE_REDIS_URL=redis://cache:6379/0"
@@ -103,6 +105,12 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9200:9200"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9600:9600"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200 >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
     volumes:
       - search_data:/usr/share/opensearch/data
   opensearch-dashboards:

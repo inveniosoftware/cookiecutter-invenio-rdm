@@ -1,14 +1,10 @@
 {%- if cookiecutter.base_image == "debian" %}
 # syntax=docker/dockerfile:1
 
-#
-# Copyright (C) {{ cookiecutter.year }} Northwestern University.
-# Copyright (C) {{ cookiecutter.year }} Frontmatter.
-# Copyright (C) {{ cookiecutter.year }} KTH Royal Institute of Technology.
-#
-# Invenio is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
-#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} Northwestern University.
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} Frontmatter.
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} KTH Royal Institute of Technology.
+
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
