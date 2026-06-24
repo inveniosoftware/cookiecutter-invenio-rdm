@@ -1,10 +1,13 @@
+{%- set postgres_user = "${POSTGRES_USER:-" ~ cookiecutter.project_shortname ~ "}" -%}
+{%- set postgres_password = "${POSTGRES_PASSWORD:-" ~ cookiecutter.project_shortname ~ "}" -%}
+{%- set postgres_db = "${POSTGRES_DB:-" ~ cookiecutter.project_shortname ~ "}" -%}
 services:
   app:
     build:
       context: ./
       args:
         - ENVIRONMENT=DEV
-        - WEBPACKEXT_NPM_PKG_CLS=${WEBPACKEXT_NPM_PKG_CLS:-pynpm:PNPMPackage}
+        - INVENIO_WEBPACKEXT_NPM_PKG_CLS=${INVENIO_WEBPACKEXT_NPM_PKG_CLS:-pynpm:PNPMPackage}
     image: {{cookiecutter.project_shortname}}
     restart: "unless-stopped"
     environment:
@@ -18,12 +21,16 @@ services:
       - "INVENIO_CELERY_RESULT_BACKEND=redis://cache:6379/2"
       - "INVENIO_COMMUNITIES_IDENTITIES_CACHE_REDIS_URL=redis://cache:6379/4"
       - "INVENIO_SEARCH_HOSTS=['search:9200']"
-      - "INVENIO_SECRET_KEY=CHANGE_ME"
-      - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
+      - "INVENIO_SECRET_KEY=${INVENIO_SECRET_KEY:-CHANGE_ME}"
+      - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{ postgres_user }}:{{ postgres_password }}@db/{{ postgres_db }}"
       - "INVENIO_PROXYFIX_CONFIG={'x_for': 1, 'x_proto': 1}"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
       - "INVENIO_SITE_UI_URL=https://127.0.0.1"
       - "INVENIO_SITE_API_URL=https://127.0.0.1/api"
+{%- if cookiecutter.file_storage == 'S3'%}
+      - "INVENIO_S3_ACCESS_KEY_ID=${MINIO_ROOT_USER:-CHANGE_ME}"
+      - "INVENIO_S3_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD:-CHANGE_ME}"
+{%- endif %}
   frontend:
     build: ./docker/nginx/
     image: {{cookiecutter.project_shortname}}-frontend
@@ -41,9 +48,9 @@ services:
     image: postgres:17.10
     restart: "unless-stopped"
     environment:
-      - "POSTGRES_USER={{cookiecutter.project_shortname}}"
-      - "POSTGRES_PASSWORD={{cookiecutter.project_shortname}}"
-      - "POSTGRES_DB={{cookiecutter.project_shortname}}"
+      - "POSTGRES_USER={{ postgres_user }}"
+      - "POSTGRES_PASSWORD={{ postgres_password }}"
+      - "POSTGRES_DB={{ postgres_db }}"
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5432:5432"
     volumes:
@@ -54,8 +61,8 @@ services:
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:5050:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: "{{cookiecutter.author_email}}"
-      PGADMIN_DEFAULT_PASSWORD: "{{cookiecutter.project_shortname}}"
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-{{cookiecutter.author_email}}}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-{{cookiecutter.project_shortname}}}
     volumes:
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
   # note: RabbitMQ uses the hostname to build the Mnesia data directory path (cf. https://www.rabbitmq.com/docs/configure)
@@ -92,7 +99,7 @@ services:
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
       # Change the initial admin password according to the OpenSearch documentation:
       # https://docs.opensearch.org/latest/security/configuration/demo-configuration/#setting-up-a-custom-admin-password
-      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=CHANGE_me_0!"
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD:-CHANGE_me_0!}"
       - "DISABLE_INSTALL_DEMO_CONFIG=true"
       - "DISABLE_SECURITY_PLUGIN=true"
       - "discovery.type=single-node"
@@ -133,8 +140,8 @@ services:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9000:9000"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9001:9001"
     environment:
-      MINIO_ROOT_USER: CHANGE_ME
-      MINIO_ROOT_PASSWORD: CHANGE_ME
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-CHANGE_ME}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-CHANGE_ME}
     volumes:
       - s3_data:/data
     command: server /data --console-address :9001
