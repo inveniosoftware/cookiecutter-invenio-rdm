@@ -4,12 +4,9 @@ services:
       context: ./
       args:
         - ENVIRONMENT=DEV
-        - WEBPACKEXT_NPM_PKG_CLS=${WEBPACKEXT_NPM_PKG_CLS:-pynpm:PNPMPackage}
     image: {{cookiecutter.project_shortname}}
     restart: "unless-stopped"
     environment:
-      - "INVENIO_SITE_UI_URL=https://127.0.0.1"
-      - "INVENIO_SITE_API_URL=https://127.0.0.1/api"
       - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"
       - "INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/"
       - "INVENIO_CACHE_REDIS_URL=redis://cache:6379/0"
