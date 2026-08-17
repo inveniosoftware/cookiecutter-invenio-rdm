@@ -19,6 +19,8 @@ services:
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://{{cookiecutter.project_shortname}}:{{cookiecutter.project_shortname}}@db/{{cookiecutter.project_shortname}}"
       - "INVENIO_PROXYFIX_CONFIG={'x_for': 1, 'x_proto': 1}"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
+      # If you are deploying your site on a non-local host
+      # make sure to change those values accordingly.
       - "INVENIO_SITE_UI_URL=https://127.0.0.1"
       - "INVENIO_SITE_API_URL=https://127.0.0.1/api"
   frontend:
