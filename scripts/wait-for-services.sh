@@ -21,7 +21,7 @@ check_ready() {
 
 if [ "${COOKIECUTTER_FILE_STORAGE}" = "S3" ]
 then
-    _s3_check(){ curl --output /dev/null --silent --head --fail http://localhost:9000/minio/health/live &>/dev/null;}
+    _s3_check(){ curl --output /dev/null --silent --head --fail http://localhost:9000/health &>/dev/null;}
     check_ready "S3" _s3_check
 fi
 
