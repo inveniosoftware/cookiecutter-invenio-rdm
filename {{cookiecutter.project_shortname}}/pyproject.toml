@@ -47,3 +47,65 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 bypass-selection = true
+
+[tool.uv]
+exclude-newer = "7 days"
+
+[tool.uv.exclude-newer-package]
+flask-security-invenio = false
+invenio-access = false
+invenio-accounts = false
+invenio-administration = false
+invenio-app = false
+invenio-app-rdm = false
+invenio-assets = false
+invenio-audit-logs = false
+invenio-banners = false
+invenio-base = false
+invenio-cache = false
+invenio-celery = false
+invenio-checks = false
+invenio-collections = false
+invenio-communities = false
+invenio-config = false
+invenio-db = false
+invenio-drafts-resources = false
+invenio-files-rest = false
+invenio-formatter = false
+invenio-i18n = false
+invenio-indexer = false
+invenio-jobs = false
+invenio-jsonschemas = false
+invenio-logging = false
+invenio-mail = false
+invenio-notifications = false
+invenio-oaiserver = false
+invenio-oauth2server = false
+invenio-oauthclient = false
+invenio-pages = false
+invenio-pidstore = false
+invenio-previewer = false
+invenio-rdm-records = false
+invenio-records = false
+invenio-records-files = false
+invenio-records-permissions = false
+invenio-records-resources = false
+invenio-records-rest = false
+invenio-records-ui = false
+invenio-requests = false
+invenio-rest = false
+{% if cookiecutter.file_storage == 'S3' -%}
+invenio-s3 = false
+{% endif -%}
+invenio-search = false
+invenio-search-ui = false
+invenio-sitemap = false
+invenio-stats = false
+invenio-theme = false
+invenio-userprofiles = false
+invenio-users-resources = false
+invenio-vocabularies = false
+jsonresolver = false
+marshmallow-utils = false
+pynpm = false
+pywebpack = false
