@@ -23,6 +23,17 @@ services:
       # make sure to change those values accordingly.
       - "INVENIO_SITE_UI_URL=https://127.0.0.1"
       - "INVENIO_SITE_API_URL=https://127.0.0.1/api"
+{%- if cookiecutter.file_storage == 'S3' %}
+      - "INVENIO_S3_ENDPOINT_URL=https://s3:9000"
+      - "INVENIO_S3_CA_BUNDLE=/etc/ssl/certs/dev_ca.pem"
+    volumes:
+      - type: bind
+        source: ${S3_CA_BUNDLE:-./docker/nginx/test.crt}
+        target: /etc/ssl/certs/dev_ca.pem
+        read_only: true
+        bind:
+          create_host_path: false
+{%- endif %}
   frontend:
     build: ./docker/nginx/
     image: {{cookiecutter.project_shortname}}-frontend
@@ -135,13 +146,26 @@ services:
       RUSTFS_CONSOLE_ENABLE: "true"
       RUSTFS_CONSOLE_ADDRESS: "0.0.0.0:9001"
       RUSTFS_VOLUMES: "/data"
+      RUSTFS_TLS_PATH: "/certs"
     ports:
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9000:9000"
       - "${DOCKER_SERVICES_IP_BIND:-127.0.0.1}:9001:9001"
     volumes:
       - s3_data:/data
+      - type: bind
+        source: ./docker/nginx/test.crt
+        target: /certs/rustfs_cert.pem
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./docker/nginx/test.key
+        target: /certs/rustfs_key.pem
+        read_only: true
+        bind:
+          create_host_path: false
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      test: ["CMD", "curl", "--cacert", "/certs/rustfs_cert.pem", "-f", "https://localhost:9000/health"]
       interval: 30s
       timeout: 20s
       retries: 3

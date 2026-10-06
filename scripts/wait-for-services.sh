@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2019-2020 CERN.
 # SPDX-FileCopyrightText: 2019-2020 Northwestern University.
-# SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
+# SPDX-FileCopyrightText: 2024-2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 # Verify that all services are running before continuing
@@ -21,7 +21,7 @@ check_ready() {
 
 if [ "${COOKIECUTTER_FILE_STORAGE}" = "S3" ]
 then
-    _s3_check(){ curl --output /dev/null --silent --head --fail http://localhost:9000/health &>/dev/null;}
+    _s3_check(){ curl --output /dev/null --silent --head --fail --cacert ./docker/nginx/test.crt https://localhost:9000/health &>/dev/null;}
     check_ready "S3" _s3_check
 fi
 
