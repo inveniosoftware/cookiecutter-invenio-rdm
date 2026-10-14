@@ -28,6 +28,9 @@ dependencies = [
   {%- endif %}
 ]
 
+[tool.uv]
+exclude-newer = "3 days"
+
 {% if cookiecutter.site_code == 'yes' -%}
 [tool.uv.sources]
 "{{ site_dist_name }}" = { workspace = true }
